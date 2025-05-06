@@ -33,12 +33,33 @@ export default function MedicalForm() {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert('Datele completate:\n' + JSON.stringify(formData, null, 2));
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-  return (
+        try {
+            const response = await fetch('http://localhost:4000/submit-form', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert('Formular trimis cu succes! ' + result.message);
+            } else {
+                alert('Eroare la trimitere: ' + result.error);
+            }
+        } catch (error) {
+            console.error('Eroare la trimiterea datelor:', error);
+            alert('A apărut o eroare. Verifică consola pentru detalii.');
+        }
+    };
+
+
+    return (
     <form className="form-container" onSubmit={handleSubmit}>
       <h2>Chestionar Medical – Date personale</h2>
 
