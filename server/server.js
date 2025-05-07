@@ -38,8 +38,7 @@ app.post('/submit-form', async (req, res) => {
     try {
         // Salvează datele în MongoDB
         const patient = new Patient(formData);
-        await patient.save();
-        console.log('Salvat în MongoDB:', patient);
+
 
         // Dacă există consimțământ semnat, trimite-l către smart contract
         console.log('Sending transaction to signConsent method...');
@@ -48,14 +47,19 @@ app.post('/submit-form', async (req, res) => {
             .send({ from: ACCOUNT_ADDRESS, gas: 5000000 })
             .on('transactionHash', (hash) => {
                 console.log('Transaction Hash:', hash);
+                patient.$set('consent', hash);
             })
             .on('receipt', (receipt) => {
                 console.log('Transaction Receipt:', receipt);
+
             })
             .on('error', (error) => {
                 console.log('Error in transaction:', error);
             });
         console.log('Transaction sent');
+        await patient.save();
+        console.log('Salvat în MongoDB:', patient);
+
         res.status(200).json({ message: 'Formular salvat și consimțământ înregistrat' });
     } catch (err) {
         console.error('Eroare la salvare:', err);
