@@ -33,15 +33,9 @@ const Patient = mongoose.model('Patient', PatientSchema);
 app.post('/submit-form', async (req, res) => {
     const formData = req.body;
 
-    console.log('Date primite:', formData);
-
     try {
-        // Salvează datele în MongoDB
-        const patient = new Patient(formData);
+        const patient = new Patient({ any: formData });
 
-
-        // Dacă există consimțământ semnat, trimite-l către smart contract
-        console.log('Sending transaction to signConsent method...');
         await contract.methods
             .signConsent(formData.signature, formData.signedDate)
             .send({ from: ACCOUNT_ADDRESS, gas: 5000000 })
@@ -51,6 +45,7 @@ app.post('/submit-form', async (req, res) => {
             })
             .on('receipt', (receipt) => {
                 console.log('Transaction Receipt:', receipt);
+                patient.$set('receipt', receipt);
 
             })
             .on('error', (error) => {
@@ -58,9 +53,9 @@ app.post('/submit-form', async (req, res) => {
             });
         console.log('Transaction sent');
         await patient.save();
-        console.log('Salvat în MongoDB:', patient);
+        console.log('Salvat in MongoDB:', patient);
+        res.status(200).json({ message: 'Formular salvat si consimtamant inregistrat' });
 
-        res.status(200).json({ message: 'Formular salvat și consimțământ înregistrat' });
     } catch (err) {
         console.error('Eroare la salvare:', err);
         res.status(500).json({ error: 'Ceva n-a mers bine la salvare sau blockchain' });
