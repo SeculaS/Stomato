@@ -32,25 +32,23 @@ const Patient = mongoose.model('Patient', PatientSchema);
 
 app.post('/submit-form', async (req, res) => {
     const formData = req.body;
-
+    await contract.methods
+        .signConsent(formData.signature, formData.signedDate)
+        .send({ from: ACCOUNT_ADDRESS, gas: 5000000 })
+        .on('transactionHash', (hash) => {
+            console.log('Transaction Hash:', hash);
+            formData.consent = hash.toString();
+            formData.consentTimestamp = Date.now();
+        })
+        .on('receipt', (receipt) => {
+            console.log('Transaction Receipt:', receipt);
+        })
+        .on('error', (error) => {
+            console.log('Error in transaction:', error);
+        });
     try {
         const patient = new Patient({ any: formData });
 
-        await contract.methods
-            .signConsent(formData.signature, formData.signedDate)
-            .send({ from: ACCOUNT_ADDRESS, gas: 5000000 })
-            .on('transactionHash', (hash) => {
-                console.log('Transaction Hash:', hash);
-                patient.$set('consent', hash);
-            })
-            .on('receipt', (receipt) => {
-                console.log('Transaction Receipt:', receipt);
-                patient.$set('receipt', receipt);
-
-            })
-            .on('error', (error) => {
-                console.log('Error in transaction:', error);
-            });
         console.log('Transaction sent');
         await patient.save();
         console.log('Salvat in MongoDB:', patient);

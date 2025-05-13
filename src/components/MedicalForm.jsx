@@ -19,7 +19,7 @@ export default function MedicalForm() {
         signedDate: '',
         signature: '',
         nursing: '',
-        consent: false,
+        consent: '',
         consentTimestamp: null
       });
       
