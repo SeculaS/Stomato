@@ -20,7 +20,8 @@ export default function MedicalForm() {
         signature: '',
         nursing: '',
         consent: '',
-        consentTimestamp: null
+        consentTimestamp: null,
+        others: ''
       });
       
       
@@ -255,7 +256,15 @@ export default function MedicalForm() {
   <br /><br />
   <em>*Acest formular aparține Clinicii Dental Point. Sustragerea, copierea sau multiplicarea lui se va pedepsi conform legii.</em>
 </p>
-
+<label>
+    Alte probleme:
+    <input
+        type="text"
+        name="others"
+        value={formData.others || ''}
+        onChange={handleChange}
+    />
+</label>
 <label>
   Data completării:
   <input
