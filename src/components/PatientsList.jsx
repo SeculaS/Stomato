@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {FaPenToSquare, FaTrashCan} from "react-icons/fa6";
+
 export default function PatientsList({ onEdit }) {
     const [patients, setPatients] = useState([]);
     const navigate = useNavigate();
@@ -55,8 +57,8 @@ export default function PatientsList({ onEdit }) {
                             <td>{patient.any.tutoreNume}</td>
                             <td>{patient.any.CNP}</td>
                             <td>
-                                <button onClick={() => handleEdit(patient.any.CNP)}>Edit</button>{' '}
-                                <button onClick={() => handleDelete(patient.any.CNP)}>Delete</button>
+                                <button onClick={() => handleEdit(patient.any.CNP)}><FaPenToSquare /></button>{' '}
+                                <button style={{backgroundColor:"red"}} onClick={() => handleDelete(patient.any.CNP)}><FaTrashCan  /></button>
                             </td>
                         </tr>
                     ))}
