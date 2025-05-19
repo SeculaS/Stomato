@@ -1,10 +1,13 @@
 import { useState } from 'react';
 
+
 export default function MedicalForm() {
+    const [showGDPRModal, setShowGDPRModal] = useState(false);
     const [formData, setFormData] = useState({
         lastName: '',
         firstName: '',
         address: '',
+        CNP: '',
         birthDate: '',
         phone: '',
         email: '',
@@ -256,6 +259,8 @@ export default function MedicalForm() {
   <br /><br />
   <em>*Acest formular aparține Clinicii Dental Point. Sustragerea, copierea sau multiplicarea lui se va pedepsi conform legii.</em>
 </p>
+
+
 <label>
     Alte probleme:
     <input
@@ -286,17 +291,60 @@ export default function MedicalForm() {
   />
 </label>
 
-<h3>Informare GDPR</h3>
-<p style={{ fontSize: '0.9rem', textalign: 'justify' }}>
-  <strong>Scopul colectării datelor</strong> este acordarea de servicii de sănătate în condițiile legii.<br />
-  Sunteți obligat(ă) să furnizați datele, acestea fiind necesare legalității acordării.
-</p>
+        <p style={{ fontSize: '0.9rem', textAlign: 'justify' }}>
+            <strong>Scopul colectării datelor</strong> este acordarea de servicii de sănătate în condițiile legii.<br />
+            Sunteți obligat(ă) să furnizați datele, acestea fiind necesare legalității acordării.
+            {' '}<br/>
+            <span
+                style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+                onClick={() => setShowGDPRModal(true)}
+            >
+    Click aici pentru detalii
+  </span>.
+        </p>
 
 
+        {showGDPRModal && (
+            <div
+                style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100vw',
+                    height: '100vh',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 1000,
+                }}
+                onClick={() => setShowGDPRModal(false)} // închide când faci click în afara conținutului
+            >
+                <div
+                    style={{
+                        backgroundColor: 'white',
+                        padding: '2rem',
+                        borderRadius: '8px',
+                        maxWidth: '600px',
+                        width: '90%',
+                        boxShadow: '0 0 10px rgba(0,0,0,0.3)',
+                        position: 'relative'
+                    }}
+                    onClick={(e) => e.stopPropagation()} // oprește propagarea clickului ca să nu închidă
+                >
+                    <h2>Informare GDPR</h2>
+                    <p>
+                        Prin completarea acestui formular vă dați consimțământul pentru prelucrarea datelor cu caracter personal în scopul furnizării de servicii medicale, conform Regulamentului UE 2016/679 (GDPR). Aveți dreptul de acces, rectificare, ștergere și restricționare a datelor. Datele nu vor fi partajate cu terți fără consimțământul dumneavoastră, cu excepția cazurilor prevăzute de lege.
+                    </p>
+                    <button onClick={() => setShowGDPRModal(false)}>Închide</button>
+                </div>
+            </div>
+        )}
 <button type="submit">Trimite</button>
     </form>
-    
 
   );
-  
+
 }
+
+
