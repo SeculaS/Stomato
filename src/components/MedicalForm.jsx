@@ -24,7 +24,10 @@ export default function MedicalForm() {
         nursing: '',
         consent: '',
         consentTimestamp: null,
-        others: ''
+        others: '',
+        under18: '',
+        tutoreNume: '',
+        tutoreCNP: ''
       });
       
       
@@ -35,12 +38,18 @@ export default function MedicalForm() {
       ...prev,
       [name]: value
     }));
+    if(!isOver18(formData.birthDate)) formData.under18 = 'da';
+    else formData.under18 = 'nu';
   };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!validateCNP(formData.CNP)) {
             alert("CNP invalid! Verifică formatul și cifra de control.");
+            return;
+        }
+        if (!isOver18(formData.birthDate) && (!validateCNP(formData.tutoreCNP) || formData.tutoreNume.length < 1)) {
+            alert("CNP sau nume tutore invalid!");
             return;
         }
         if(formData.firstName.length < 1 || formData.lastName.length < 1){
@@ -115,7 +124,7 @@ export default function MedicalForm() {
 
       <label>
         Data nașterii:
-        <input name="birthDate" type="date" value={formData.birthDate} onChange={handleChange} required={true} />
+        <input name="birthDate" type="date" value={formData.birthDate} onChange={handleChange} required={true} onKeyDown={(e) => e.preventDefault()} />
       </label>
 
       <label>
@@ -128,6 +137,31 @@ export default function MedicalForm() {
         <input name="email" type="email" value={formData.email} onChange={handleChange} required={true} />
       </label>
 
+
+
+        {formData.under18 === 'da' && (
+            <>
+                <label>
+                    Nume tutore:
+                    <input
+                        type="text"
+                        name="tutoreNume"
+                        value={formData.tutoreNume || ''}
+                        onChange={handleChange}
+                    />
+                </label>
+
+                <label>
+                    CNP tutore:
+                    <input
+                        type="text"
+                        name="tutoreCNP"
+                        value={formData.tutoreCNP || ''}
+                        onChange={handleChange}
+                    />
+                </label>
+            </>
+        )}
       <label>
         Cum ați aflat de clinică?
         <input name="guidedBy" type="text" value={formData.guidedBy} onChange={handleChange} />
@@ -410,4 +444,15 @@ function isCurrentDate(dateString) {
     today.setHours(0, 0, 0, 0);
 
     return date.getDate() === today.getDate(); // permite doar datele de azi
+}
+function isOver18(birthDateString) {
+    const birthDate = new Date(birthDateString);
+    if (isNaN(birthDate.getTime())) return false; // dată invalidă
+
+    const today = new Date();
+    const eighteenYearsAgo = new Date(
+        today.getFullYear() - 18, today.getMonth(), today.getDate()
+    );
+    console.log(eighteenYearsAgo.toDateString());
+    return birthDate <= eighteenYearsAgo;
 }
