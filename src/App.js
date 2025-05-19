@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import MedicalForm from './components/MedicalForm';
+
 import Login from './components/Login';
 import './App.css';
+import PatientsList from './components/PatientsList';
+import EditMedicalFile from "./components/EditMedicalFile";
+import MedicalForm from "./components/MedicalForm"; // pagina cu pacienți
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -12,12 +15,21 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={loggedIn ? <Navigate to="/chestionar" /> : <Login onLogin={() => setLoggedIn(true)} />}
+          element={loggedIn ? <Navigate to="/patienti" /> : <Login onLogin={() => setLoggedIn(true)} />}
         />
         <Route
-          path="/chestionar"
-          element={loggedIn ? <MedicalForm /> : <Navigate to="/" />}
+          path="/patienti"
+          element={loggedIn ? <PatientsList /> : <Navigate to="/" />}
         />
+
+          <Route
+              path="/chestionar"
+              element={loggedIn ? <MedicalForm /> : <Navigate to="/" />}
+          />
+          <Route
+              path="/edit/:cnp"
+              element={loggedIn ? <EditMedicalFile /> : <Navigate to="/" />}
+          />
       </Routes>
     </Router>
   );

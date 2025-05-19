@@ -12,7 +12,7 @@ export default function Login({ onLogin }) {
         try {
             await axios.post('http://localhost:4000/login', { username, password });
             onLogin();
-            navigate('/chestionar');
+            navigate('/pacienti');
         } catch (error) {
             alert('Date de conectare incorecte!');
         }

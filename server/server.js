@@ -33,6 +33,68 @@ const Patient = mongoose.model('Patient', PatientSchema);
 
 const User = require('./models/User');
 
+app.get('/get-patients', async (req, res) => {
+    try {
+        const patients = await Patient.find();
+        res.json(patients);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Eroare la obținerea pacienților.' });
+    }
+});
+app.put('/update-patient/:cnp', async (req, res) => {
+    const cnp = req.params.cnp;
+    const updatedData = req.body; // datele noi trimise de client
+    console.log(cnp);
+    console.log(updatedData);
+    try {
+        const updatedPatient = await Patient.findOneAndUpdate(
+            { "any.CNP": cnp },
+            { $set: { any: updatedData } },
+            { new: true }
+        );
+
+        if (!updatedPatient) {
+            return res.status(404).json({ message: 'Pacientul nu a fost găsit.' });
+        }
+
+        res.json({ message: 'Pacient actualizat cu succes.', patient: updatedPatient });
+    } catch (error) {
+        console.error('Eroare la actualizare:', error);
+        res.status(500).json({ message: 'Eroare internă la actualizare.' });
+    }
+});
+app.get('/get-form-data', async (req, res) => {
+    try {
+        const { cnp } = req.query; // <-- așa preiei cnp-ul din query
+        const userData = await Patient.findOne({ "any.CNP": cnp });
+
+        if (!userData) return res.status(404).json({ error: 'Datele nu au fost găsite' });
+
+        res.json(userData);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Eroare la extragerea datelor' });
+    }
+});
+app.delete('/delete-patient/:cnp', async (req, res) => {
+    const cnp = req.params.cnp;
+
+    try {
+
+        const deletedPatient = await Patient.findOneAndDelete({ 'any.cnp': cnp });
+
+
+        if (!deletedPatient) {
+            return res.status(404).json({ message: 'Pacientul nu a fost găsit.' });
+        }
+
+        res.json({ message: 'Pacient șters cu succes.' });
+    } catch (error) {
+        console.error('Eroare la ștergere:', error);
+        res.status(500).json({ message: 'Eroare internă la ștergere.' });
+    }
+});
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
 

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import {useNavigate} from "react-router-dom";
 
 
 export default function MedicalForm() {
@@ -29,11 +30,12 @@ export default function MedicalForm() {
         tutoreNume: '',
         tutoreCNP: ''
       });
-      
-      
 
+
+    const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -89,6 +91,7 @@ export default function MedicalForm() {
 
             if (response.ok) {
                 alert('Formular trimis cu succes! ' + result.message);
+                navigate('/patienti')
             } else {
                 alert('Eroare la trimitere: ' + result.error);
             }
