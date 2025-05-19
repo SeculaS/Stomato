@@ -39,7 +39,34 @@ export default function MedicalForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        if (!validateCNP(formData.CNP)) {
+            alert("CNP invalid! Verifică formatul și cifra de control.");
+            return;
+        }
+        if(formData.firstName.length < 1 || formData.lastName.length < 1){
+            alert("Nume sau prenume invalid!");
+            return;
+        }
+        if(formData.signature.length < 1){
+            alert("Semnatura invalida, scrieti numele si prenumele!");
+            return;
+        }
+        if(formData.address.length < 1){
+            alert("Adresa invalida!");
+            return;
+        }
+        if(!isValidBirthDate(formData.birthDate)) {
+            alert("Data de nastere este invalida!");
+            return;
+        }
+        if(!isCurrentDate(formData.signedDate)) {
+            alert("Se poate semna doar la data curenta!");
+            return;
+        }
+        if(formData.gumBleeding.length < 1 || formData.toothSensitivity.length < 1 || formData.bruxism.length < 1 || formData.orthoProblems.length < 1){
+            alert("Nu ai raspuns la \"Intrebari despre sanatatea orala\"!");
+            return;
+        }
         try {
             const response = await fetch('http://localhost:4000/submit-form', {
                 method: 'POST',
@@ -69,36 +96,36 @@ export default function MedicalForm() {
 
       <label>
         Nume:
-        <input name="lastName" type="text" value={formData.lastName} onChange={handleChange} />
+        <input name="lastName" type="text" value={formData.lastName} onChange={handleChange} required={true} />
       </label>
 
       <label>
         Prenume:
-        <input name="firstName" type="text" value={formData.firstName} onChange={handleChange} />
+        <input name="firstName" type="text" value={formData.firstName} onChange={handleChange} required={true} />
       </label>
 
       <label>
         Adresă (conform C.I.):
-        <input name="address" type="text" value={formData.address} onChange={handleChange} />
+        <input name="address" type="text" value={formData.address} onChange={handleChange} required={true}  />
       </label>
-        <label>
-            Cod numeric personal:
-            <input name="cnp" type="text" value={formData.CNP} onChange={handleChange} />
-        </label>
+      <label>
+          Cod numeric personal:
+          <input name="CNP" type="number" value={formData.CNP} onChange={handleChange} required={true} />
+      </label>
 
       <label>
         Data nașterii:
-        <input name="birthDate" type="date" value={formData.birthDate} onChange={handleChange} />
+        <input name="birthDate" type="date" value={formData.birthDate} onChange={handleChange} required={true} />
       </label>
 
       <label>
         Telefon:
-        <input name="phone" type="text" value={formData.phone} onChange={handleChange} />
+        <input name="phone" type="text" value={formData.phone} onChange={handleChange} required={true} />
       </label>
 
       <label>
         Email:
-        <input name="email" type="email" value={formData.email} onChange={handleChange} />
+        <input name="email" type="email" value={formData.email} onChange={handleChange} required={true} />
       </label>
 
       <label>
@@ -281,7 +308,7 @@ export default function MedicalForm() {
     name="signedDate"
     value={formData.signedDate || ''}
     onChange={handleChange}
-  />
+    required={true} />
 </label>
 
 <label>
@@ -292,7 +319,7 @@ export default function MedicalForm() {
     value={formData.signature || ''}
     onChange={handleChange}
     placeholder="Introduceți numele complet"
-  />
+    required={true} />
 </label>
 
         <p style={{ fontSize: '0.9rem', textAlign: 'justify' }}>
@@ -351,4 +378,36 @@ export default function MedicalForm() {
 
 }
 
+function validateCNP(cnp) {
+    if (!/^\d{13}$/.test(cnp)) return false;
 
+    const controlKey = "279146358279";
+    const cnpDigits = cnp.split("").map(Number);
+    const sum = cnpDigits.slice(0, 12).reduce((acc, digit, i) => {
+        return acc + digit * Number(controlKey[i]);
+    }, 0);
+
+    const remainder = sum % 11;
+    const controlDigit = remainder === 10 ? 1 : remainder;
+
+    return controlDigit === cnpDigits[12];
+}
+
+function isValidBirthDate(dateString) {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return false; // Nu e o dată validă
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return date <= today;
+}
+function isCurrentDate(dateString) {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return false; // Nu e o dată validă
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return date.getDate() === today.getDate(); // permite doar datele de azi
+}
