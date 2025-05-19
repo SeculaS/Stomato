@@ -322,7 +322,7 @@ export default function MedicalForm() {
                     alignItems: 'center',
                     zIndex: 1000,
                 }}
-                onClick={() => setShowGDPRModal(false)} // închide când faci click în afara conținutului
+                onClick={() => setShowGDPRModal(false)}
             >
                 <div
                     style={{

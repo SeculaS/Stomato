@@ -8,7 +8,6 @@ export default function Login({ onLogin }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // autentificare simplă (poți înlocui cu ce vrei)
     if (username === 'medic' && password === '1234') {
       onLogin();
       navigate('/chestionar');
