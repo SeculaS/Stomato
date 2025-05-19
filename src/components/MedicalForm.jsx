@@ -81,6 +81,10 @@ export default function MedicalForm() {
         Adresă (conform C.I.):
         <input name="address" type="text" value={formData.address} onChange={handleChange} />
       </label>
+        <label>
+            Cod numeric personal:
+            <input name="cnp" type="text" value={formData.CNP} onChange={handleChange} />
+        </label>
 
       <label>
         Data nașterii:
