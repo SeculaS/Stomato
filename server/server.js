@@ -3,6 +3,7 @@
 
 const express = require('express');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const Web3 = require('web3');
 const cors = require('cors');
 const contractJSON = require('../build/contracts/MedicalConsent.json');
@@ -29,6 +30,20 @@ mongoose.connect('mongodb://127.0.0.1:27017/medical_forms', {
 
 const PatientSchema = new mongoose.Schema({ any: mongoose.Schema.Types.Mixed });
 const Patient = mongoose.model('Patient', PatientSchema);
+
+const User = require('./models/User');
+
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+
+    const user = await User.findOne({ username });
+    if (!user) return res.status(401).json({ error: 'Utilizator inexistent' });
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) return res.status(401).json({ error: 'Parolă greșită' });
+
+    res.status(200).json({ message: 'Autentificare reușită' });
+});
 
 app.post('/submit-form', async (req, res) => {
     const formData = req.body;
