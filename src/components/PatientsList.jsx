@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {FaPenToSquare, FaTrashCan} from "react-icons/fa6";
+import {FaPenToSquare, FaTrashCan, FaFilePdf} from "react-icons/fa6";
+import TooltipButton from "./TooltipButton";
 
 export default function PatientsList({ onEdit }) {
     const [patients, setPatients] = useState([]);
@@ -56,10 +57,11 @@ export default function PatientsList({ onEdit }) {
                             <td>{patient.any.lastName} {patient.any.firstName}</td>
                             <td>{patient.any.tutoreNume}</td>
                             <td>{patient.any.CNP}</td>
-                            <td>
-                                <button onClick={() => handleEdit(patient.any.CNP)}><FaPenToSquare /></button>{' '}
-                                <button style={{backgroundColor:"red"}} onClick={() => handleDelete(patient.any.CNP)}><FaTrashCan  /></button>
-                            </td>
+                            <td><center>
+                                <TooltipButton tooltipText={"Edit patient"} onClick={() => handleEdit(patient.any.CNP)}><FaPenToSquare /></TooltipButton>{' '}
+                                <TooltipButton tooltipText={"Delete patient"} style={{backgroundColor: "red"}} onClick={() => handleDelete(patient.any.CNP)}><FaTrashCan  /></TooltipButton>
+                                &nbsp;<TooltipButton tooltipText={"View or generate PDFs"} style={{backgroundColor:"darkorange"}} ><FaFilePdf  /></TooltipButton>
+                            </center></td>
                         </tr>
                     ))}
                     </tbody>
