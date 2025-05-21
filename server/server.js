@@ -151,6 +151,18 @@ app.post('/submit-form', async (req, res) => {
         res.status(500).json({ error: 'Ceva n-a mers bine la salvare sau blockchain' });
     }
 });
+app.post('/api/acorduri', async (req, res) => {
+    const { cnp } = req.body;
+
+    try {
+        const acorduri = await Form.find({ 'any.cnp': cnp })
+            .sort({ 'any.consentTimestamp': -1 }); // DESC
+        res.json(acorduri);
+    } catch (err) {
+        console.error('Eroare la extragere acorduri:', err);
+        res.status(500).json({ error: 'Eroare la extragerea acordurilor' });
+    }
+});
 app.post('/submit-form-pedodontic', async (req, res) => {
     const formData = req.body;
     await contractPedo.methods

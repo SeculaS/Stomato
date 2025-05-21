@@ -8,6 +8,7 @@ export default function PatientsList({ onEdit }) {
     const [patients, setPatients] = useState([]);
     const navigate = useNavigate();
     const [selectedPatient, setSelectedPatient] = useState(null);
+    const [acorduri, setAcorduri] = useState([]);
     const [showModal, setShowModal] = useState(false);
     useEffect(() => {
         fetchPatients();
@@ -28,6 +29,32 @@ export default function PatientsList({ onEdit }) {
     };
     const handlePdfClick = (patient) => {
         setSelectedPatient(patient);
+
+        const handleLoadAcorduri = async () => {
+            try {
+                const res = await fetch('http://localhost:4000/api/acorduri', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ cnp: patient.any.CNP }),
+                });
+                if (!res.ok) {
+                    const errorText = await res.text();
+                    console.error('Eroare răspuns server:', errorText);
+                    return;
+                }
+
+                const data = await res.json();
+                console.log(data);
+                setAcorduri(data);
+            } catch (error) {
+                console.error('Eroare la fetch acorduri:', error);
+            } finally {
+            }
+        };
+        handleLoadAcorduri();
+
         setShowModal(true);
     };
 
@@ -98,6 +125,7 @@ export default function PatientsList({ onEdit }) {
                 {showModal && selectedPatient && (
                     <ModalAcorduri
                         patient={selectedPatient}
+                        acorduri={acorduri}
                         onClose={() => setShowModal(false)}
                     />
                 )}
