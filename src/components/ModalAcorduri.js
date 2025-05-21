@@ -1,9 +1,15 @@
 import React from 'react';
 import TooltipButton from "./TooltipButton";
+import { useNavigate } from "react-router-dom";
+
 export default function ModalAcorduri({ patient, onClose }) {
+    const navigate = useNavigate();
     const handleSelect = (acordType) => {
-        alert(`A fost selectat: ${acordType} pentru pacientul ${patient.any.firstName} ${patient.any.lastName}`);
-        // Poți înlocui cu navigare: navigate(`/acord/${acordType}/${patient.any.CNP}`);
+        if(acordType === 'pedodontic') {
+            navigate(`/acordpedocreate/${patient.any.CNP}`);
+        }
+        else alert(`A fost selectat: ${acordType} pentru pacientul ${patient.any.firstName} ${patient.any.lastName}`);
+
         onClose();
     };
 

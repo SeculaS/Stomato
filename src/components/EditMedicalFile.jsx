@@ -131,11 +131,7 @@ export default function EditMedicalFile() {
         }
     };
 
-    // Restul formularului rămâne la fel, vezi mesajul anterior
 
-    // +++++++++++++++++++++++++++++++++++
-    // ... păstrează tot conținutul JSX deja existent ...
-    // +++++++++++++++++++++++++++++++++++
 
     return (
         <form className="form-container" onSubmit={handleSubmit}>

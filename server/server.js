@@ -1,6 +1,8 @@
 // server/server.js
 
 
+
+
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
@@ -43,6 +45,8 @@ const PatientSchema = new mongoose.Schema({ any: mongoose.Schema.Types.Mixed });
 const Patient = mongoose.model('Patient', PatientSchema);
 
 const User = require('./models/User');
+
+const Form = require('./models/Form');
 
 app.get('/get-patients', async (req, res) => {
     try {
@@ -141,6 +145,35 @@ app.post('/submit-form', async (req, res) => {
         await patient.save();
         console.log('Salvat in MongoDB:', patient);
         res.status(200).json({ message: 'Formular salvat si consimtamant inregistrat' });
+
+    } catch (err) {
+        console.error('Eroare la salvare:', err);
+        res.status(500).json({ error: 'Ceva n-a mers bine la salvare sau blockchain' });
+    }
+});
+app.post('/submit-form-pedodontic', async (req, res) => {
+    const formData = req.body;
+    await contractPedo.methods
+        .signConsent(formData.signature, formData.signedDate)
+        .send({ from: ACCOUNT_ADDRESS, gas: 5000000 })
+        .on('transactionHash', (hash) => {
+            console.log('Transaction Hash:', hash);
+            formData.consent = hash.toString();
+            formData.consentTimestamp = Date.now();
+        })
+        .on('receipt', (receipt) => {
+            console.log('Transaction Receipt:', receipt);
+        })
+        .on('error', (error) => {
+            console.log('Error in transaction:', error);
+        });
+    try {
+        const form = new Form({ any: formData });
+
+        console.log('Transaction sent');
+        await form.save();
+        console.log('Salvat in MongoDB:', form);
+        res.status(200).json({ message: 'Formular salvat si inregistrat' });
 
     } catch (err) {
         console.error('Eroare la salvare:', err);

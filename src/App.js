@@ -5,7 +5,8 @@ import Login from './components/Login';
 import './App.css';
 import PatientsList from './components/PatientsList';
 import EditMedicalFile from "./components/EditMedicalFile";
-import MedicalForm from "./components/MedicalForm"; // pagina cu pacienți
+import MedicalForm from "./components/MedicalForm";
+import AcordPedo from "./components/AcordPedo";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -29,6 +30,10 @@ function App() {
           <Route
               path="/edit/:cnp"
               element={loggedIn ? <EditMedicalFile /> : <Navigate to="/" />}
+          />
+          <Route
+              path="/acordpedocreate/:cnp"
+              element={loggedIn ? <AcordPedo /> : <Navigate to="/" />}
           />
       </Routes>
     </Router>
