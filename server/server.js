@@ -8,17 +8,28 @@ const Web3 = require('web3');
 const cors = require('cors');
 const contractJSON = require('../build/contracts/MedicalConsent.json');
 
+const contractGenJSON = require('../build/contracts/GeneConsent.json');
+const contractEndJSON = require('../build/contracts/EndoConsent.json');
+const contractPedJSON = require('../build/contracts/PedoConsent.json');
+
 const app = express();
 const PORT = 4000;
 
 // Config
 const GANACHE_RPC = 'http://127.0.0.1:7545';
 const CONTRACT_ADDRESS = '0x86d8639BB35d2d42DE381D413ea4d1513C6934b6'; // Replace this!
+const CONSTACT_ENDO_ADDRESS = '0x73CB66e54b8c51f3Daf1439cf17228113D66e87B';
+const CONSTACT_GENE_ADDRESS = '0x0ec5C975b967551Eec9D85Ae7c13b5D000582e90';
+const CONSTACT_PEDO_ADDRESS = '0x0A210305B89547defe0B5a2A77da77CB3e3a8cE7';
 const ACCOUNT_ADDRESS = '0xb0BA4b4410009E87335666f8262807CB814Efb36'; // Replace with unlocked Ganache address
 
 // Init
 const web3 = new Web3(new Web3.providers.HttpProvider(GANACHE_RPC));
 const contract = new web3.eth.Contract(contractJSON.abi, CONTRACT_ADDRESS);
+const contractEndo = new web3.eth.Contract(contractEndJSON.abi, CONSTACT_ENDO_ADDRESS);
+const contractPedo = new web3.eth.Contract(contractPedJSON.abi, CONSTACT_PEDO_ADDRESS);
+const contractGene = new web3.eth.Contract(contractGenJSON.abi, CONSTACT_GENE_ADDRESS);
+
 
 app.use(cors());
 app.use(express.json());

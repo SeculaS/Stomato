@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {FaPenToSquare, FaTrashCan, FaFilePdf} from "react-icons/fa6";
 import TooltipButton from "./TooltipButton";
+import ModalAcorduri from "./ModalAcorduri"; //
 
 export default function PatientsList({ onEdit }) {
     const [patients, setPatients] = useState([]);
     const navigate = useNavigate();
+    const [selectedPatient, setSelectedPatient] = useState(null);
+    const [showModal, setShowModal] = useState(false);
     useEffect(() => {
         fetchPatients();
     }, []);
@@ -22,6 +25,10 @@ export default function PatientsList({ onEdit }) {
     };
     const handleEdit = (cnp) => {
         navigate(`/edit/${cnp}`);
+    };
+    const handlePdfClick = (patient) => {
+        setSelectedPatient(patient);
+        setShowModal(true);
     };
 
     const handleDelete = async (cnp) => {
@@ -60,33 +67,40 @@ export default function PatientsList({ onEdit }) {
                             <td><center>
                                 <TooltipButton tooltipText={"Edit patient"} onClick={() => handleEdit(patient.any.CNP)}><FaPenToSquare /></TooltipButton>{' '}
                                 <TooltipButton tooltipText={"Delete patient"} style={{backgroundColor: "red"}} onClick={() => handleDelete(patient.any.CNP)}><FaTrashCan  /></TooltipButton>
-                                &nbsp;<TooltipButton tooltipText={"View or generate PDFs"} style={{backgroundColor:"darkorange"}} ><FaFilePdf  /></TooltipButton>
+                                &nbsp;
+                                <TooltipButton tooltipText={"View or generate PDFs"} style={{ backgroundColor: "darkorange" }} onClick={() => handlePdfClick(patient)}><FaFilePdf /></TooltipButton>
                             </center></td>
                         </tr>
                     ))}
                     </tbody>
                 </table>
 
-                {/* Exemplu floating button */}
-                <button
-                    onClick={() => navigate('/chestionar')}
-                    style={{
-                        position: 'fixed',
-                        bottom: 20,
-                        right: 20,
-                        backgroundColor: '#007bff',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '50%',
-                        width: 50,
-                        height: 50,
-                        fontSize: 24,
-                        cursor: 'pointer',
-                        boxShadow: '0 2px 5px rgba(0,0,0,0.3)',
-                    }}
-                >
-                    +
-                </button>
+                {}
+                <div style={{ display: 'flex', justifyContent: 'right', marginTop: 30, marginRight:30}}>
+                    <TooltipButton tooltipText={"Add patient"}
+                        onClick={() => navigate('/chestionar')}
+                        style={{
+                            backgroundColor: '#007bff',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '50%',
+                            width: 60,
+                            height: 60,
+                            fontSize: 28,
+                            fontWeight: 'bold',
+                            cursor: 'pointer',
+                            boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+                        }}
+                    >
+                        +
+                    </TooltipButton>
+                </div>
+                {showModal && selectedPatient && (
+                    <ModalAcorduri
+                        patient={selectedPatient}
+                        onClose={() => setShowModal(false)}
+                    />
+                )}
             </>
         </div>
     );
