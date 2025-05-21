@@ -288,6 +288,7 @@ export default function EditMedicalFile() {
                     {conditie}
                 </label>
             ))}
+            {parseInt(formData.CNP[0])%2 === 0 && ( <>
             <h3>Secțiune pentru femei</h3>
 
             <label>
@@ -349,7 +350,7 @@ export default function EditMedicalFile() {
                         /> NU
                     </label>
                 </div>
-            </label>
+            </label> </>)}
 
             <label>
                 Alte probleme:

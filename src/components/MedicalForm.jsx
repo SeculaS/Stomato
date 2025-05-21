@@ -252,69 +252,71 @@ export default function MedicalForm() {
     />
     {conditie}
   </label>
-))}
-<h3>Secțiune pentru femei</h3>
+))}{ (parseInt(formData.CNP[0])%2 === 0 && formData.CNP.length > 0) && ( <>
+        <h3>Secțiune pentru femei</h3>
 
-<label>
-  Sunteți însărcinată?
-  <div>
-    <label>
-      <input
-        type="radio"
-        name="pregnant"
-        value="da"
-        checked={formData.pregnant === 'da'}
-        onChange={handleChange}
-      /> DA
-    </label>
-    <label style={{ marginLeft: '2rem' }}>
-      <input
-        type="radio"
-        name="pregnant"
-        value="nu"
-        checked={formData.pregnant === 'nu'}
-        onChange={handleChange}
-      /> NU
-    </label>
-  </div>
-</label>
+        <label>
+            Sunteți însărcinată?
+            <div>
+                <label>
+                    <input
+                        type="radio"
+                        name="pregnant"
+                        value="da"
+                        checked={formData.pregnant === 'da'}
+                        onChange={handleChange}
+                    /> DA
+                </label>
+                <label style={{ marginLeft: '2rem' }}>
+                    <input
+                        type="radio"
+                        name="pregnant"
+                        value="nu"
+                        checked={formData.pregnant === 'nu'}
+                        onChange={handleChange}
+                    /> NU
+                </label>
+            </div>
+        </label>
 
-{formData.pregnant === 'da' && (
-  <label>
-    Dacă da, în ce lună?
-    <input
-      type="text"
-      name="pregnancyMonth"
-      value={formData.pregnancyMonth || ''}
-      onChange={handleChange}
-      placeholder="Ex: luna a 5-a"
-    />
-  </label>
-)}
+        {(formData.pregnant === 'da') && (
+            <label>
+                Dacă da, în ce lună?
+                <input
+                    type="text"
+                    name="pregnancyMonth"
+                    value={formData.pregnancyMonth || ''}
+                    onChange={handleChange}
+                    placeholder="Ex: luna a 5-a"
+                />
+            </label>
+        )}
 
-<label>
-  Alăptați?
-  <div>
-    <label>
-      <input
-        type="radio"
-        name="nursing"
-        value="da"
-        checked={formData.nursing === 'da'}
-        onChange={handleChange}
-      /> DA
-    </label>
-    <label style={{ marginLeft: '2rem' }}>
-      <input
-        type="radio"
-        name="nursing"
-        value="nu"
-        checked={formData.nursing === 'nu'}
-        onChange={handleChange}
-      /> NU
-    </label>
-  </div>
-</label>
+        <label>
+            Alăptați?
+            <div>
+                <label>
+                    <input
+                        type="radio"
+                        name="nursing"
+                        value="da"
+                        checked={formData.nursing === 'da'}
+                        onChange={handleChange}
+                    /> DA
+                </label>
+                <label style={{ marginLeft: '2rem' }}>
+                    <input
+                        type="radio"
+                        name="nursing"
+                        value="nu"
+                        checked={formData.nursing === 'nu'}
+                        onChange={handleChange}
+                    /> NU
+                </label>
+            </div>
+        </label> </>)}
+
+
 
 <h3>Declarație pacient</h3>
 <p style={{ fontSize: '0.9rem', textAlign: 'justify' }}> 
