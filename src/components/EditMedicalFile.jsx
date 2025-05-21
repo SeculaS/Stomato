@@ -157,7 +157,7 @@ export default function EditMedicalFile() {
             </label>
             <label>
                 Cod numeric personal:
-                <input name="CNP" type="number" value={formData.CNP} onChange={handleChange} required={true} />
+                <input name="CNP" type="number" value={formData.CNP} onChange={handleChange} required={true} disabled={true}/>
             </label>
 
             <label>
