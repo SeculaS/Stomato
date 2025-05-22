@@ -92,6 +92,20 @@ app.get('/get-form-data', async (req, res) => {
         res.status(500).json({ error: 'Eroare la extragerea datelor' });
     }
 });
+
+app.get('/get-form-data-fromid', async (req, res) => {
+    try {
+        const { id } = req.query; // <-- așa preiei cnp-ul din query
+        const userData = await Form.findOne({ "_id": id });
+
+        if (!userData) return res.status(404).json({ error: 'Datele nu au fost găsite' });
+
+        res.json(userData);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Eroare la extragerea datelor' });
+    }
+});
 app.delete('/delete-patient/:cnp', async (req, res) => {
     const cnp = req.params.cnp;
 

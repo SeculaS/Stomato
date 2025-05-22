@@ -22,7 +22,7 @@ export default function ModalAcorduri({ patient, acorduri, onClose }) {
     const genereazaPDF = (acord) => {
         // Ex: creezi un PDF folosind jsPDF sau ceva similar
         console.log("Generează PDF pentru:", acord._id);
-        // ...
+        navigate(`/pedoview/${acord._id}`);
     };
 
     return (
