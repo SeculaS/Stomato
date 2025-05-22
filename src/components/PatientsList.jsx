@@ -73,7 +73,7 @@ export default function PatientsList({ onEdit }) {
     };
 
     return (
-        <div>
+        <div className={"form-container"} style={{maxWidth:'1200px'}}>
             <h2>Lista Pacienților</h2>
             <>
                 <table border="1" cellPadding="8" style={{ borderCollapse: 'collapse', width: '100%' }}>
