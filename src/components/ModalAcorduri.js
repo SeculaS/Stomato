@@ -65,7 +65,7 @@ export default function ModalAcorduri({ patient, acorduri, onClose }) {
                             {(!grouped[tip] || grouped[tip].length === 0) && <p style={{ fontStyle: 'italic', color: '#888' }}>Niciun acord</p>}
                             {/* Buton creare nou */}
                             <TooltipButton style={{ marginBottom: 10 }} onClick={() => {
-                                if(tip === 'endocrinologic') {
+                                if(tip === 'pedodontic') {
                                     navigate(`/acordpedocreate/${patient.any.CNP}`);
                                 }
                                 else
