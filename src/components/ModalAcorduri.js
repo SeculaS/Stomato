@@ -22,7 +22,8 @@ export default function ModalAcorduri({ patient, acorduri, onClose }) {
     const genereazaPDF = (acord) => {
         // Ex: creezi un PDF folosind jsPDF sau ceva similar
         console.log("Generează PDF pentru:", acord._id);
-        navigate(`/pedoview/${acord._id}`);
+        if(acord.any.formType === 'pedodontic') navigate(`/pedoview/${acord._id}`);
+        else if(acord.any.formType === 'endocrinologic') navigate(`/endoview/${acord._id}`);
     };
 
     return (
@@ -67,6 +68,9 @@ export default function ModalAcorduri({ patient, acorduri, onClose }) {
                             <TooltipButton style={{ marginBottom: 10 }} onClick={() => {
                                 if(tip === 'pedodontic') {
                                     navigate(`/acordpedocreate/${patient.any.CNP}`);
+                                }
+                                else if (tip === 'endocrinologic') {
+                                    navigate(`/acordendocreate/${patient.any.CNP}`);
                                 }
                                 else
                                     alert(tip);

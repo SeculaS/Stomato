@@ -1,6 +1,6 @@
 
-const PedoConsent = artifacts.require("PedoConsent");
+const ChirConsent = artifacts.require("ChirConsent");
 
 module.exports = async function (deployer) {
-    await deployer.deploy(PedoConsent, { gas: 6000000 });
+    await deployer.deploy(ChirConsent, { gas: 6000000 });
 };

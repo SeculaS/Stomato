@@ -51,7 +51,7 @@ export default function ViewPedo() {
     const handleDownload = (acord) => {
         const element = targetReff.current;
         const options = {
-            filename: `${acord.firstName}_${acord.lastName}-${acord.consentTimestamp}.pdf`,
+            filename: `${acord.firstName}_${acord.lastName}-${acord.consentTimestamp}_endo.pdf`,
             margin:       0.5,
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2 },

@@ -8,6 +8,8 @@ import EditMedicalFile from "./components/EditMedicalFile";
 import MedicalForm from "./components/MedicalForm";
 import AcordPedo from "./components/AcordPedo";
 import ViewPedo from "./components/ViewPedo";
+import AcordEndo from "./components/AcordEndo";
+import ViewEndo from "./components/ViewEndo";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -37,8 +39,16 @@ function App() {
               element={loggedIn ? <AcordPedo /> : <Navigate to="/" />}
           />
           <Route
-            path="/pedoview/:id"
-            element={loggedIn ? <ViewPedo /> : <Navigate to="/" />}
+              path="/acordendocreate/:cnp"
+              element={loggedIn ? <AcordEndo /> : <Navigate to="/" />}
+          />
+          <Route
+              path="/pedoview/:id"
+              element={loggedIn ? <ViewPedo /> : <Navigate to="/" />}
+          />
+          <Route
+              path="/endoview/:id"
+              element={loggedIn ? <ViewEndo /> : <Navigate to="/" />}
           />
       </Routes>
     </Router>
