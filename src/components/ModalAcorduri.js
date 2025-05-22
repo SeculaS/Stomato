@@ -38,10 +38,10 @@ export default function ModalAcorduri({ patient, acorduri, onClose }) {
                 <h3>Acordurile pacientului: {patient.any.firstName} {patient.any.lastName}</h3>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 20, gap: 20 }}>
-                    {['pedodontic', 'endocrinologic', 'general'].map((tip) => (
+                    {['pedodontic', 'endocrinologic', 'general', 'chirurgie'].map((tip) => (
                         <div key={tip} style={{ flex: 1, margin: '0 10px', border: '1px solid #ccc', borderRadius: 8, padding: 10 }}>
                             <h4>Acorduri {tip.charAt(0).toUpperCase() + tip.slice(1)}</h4>
-                            <hr /><ul>
+                            <hr />
                             {(grouped[tip] || []).map(acord => (
                                 <a
                                     key={acord._id}
@@ -58,9 +58,9 @@ export default function ModalAcorduri({ patient, acorduri, onClose }) {
                                         textDecoration: 'underline'
                                     }}
                                 >
-                                    <li>  {formatTimestamp(acord.any.consentTimestamp)}</li>
+                                    <li>{formatTimestamp(acord.any.consentTimestamp)}</li>
                                 </a>
-                            ))}</ul>
+                            ))}
 
                             {(!grouped[tip] || grouped[tip].length === 0) && <p style={{ fontStyle: 'italic', color: '#888' }}>Niciun acord</p>}
                             {/* Buton creare nou */}
