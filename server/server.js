@@ -33,7 +33,7 @@ const contract = new web3.eth.Contract(contractJSON.abi, CONTRACT_ADDRESS);
 const contractEndo = new web3.eth.Contract(contractEndJSON.abi, CONSTACT_ENDO_ADDRESS);
 const contractPedo = new web3.eth.Contract(contractPedJSON.abi, CONSTACT_PEDO_ADDRESS);
 const contractGene = new web3.eth.Contract(contractGenJSON.abi, CONSTACT_GENE_ADDRESS);
-const contractChir = new web3.eth.Contract(contractGenJSON.abi, CONSTACT_GENE_ADDRESS);
+const contractChir = new web3.eth.Contract(contractChiJSON.abi, CONSTACT_GENE_ADDRESS);
 
 
 app.use(cors());
