@@ -5,6 +5,7 @@ import {useParams} from "react-router-dom";
 import {FaDownload} from "react-icons/fa6";
 import TooltipButton from "./TooltipButton";
 import html2pdf from 'html2pdf.js';
+import backgroundImage from "./video-poster.png";
 
 export default function ViewGene() {
     const { id } = useParams();
@@ -64,7 +65,11 @@ export default function ViewGene() {
 
     return (
         <div className={"form-container"} style={{maxWidth:'800px'}}>
-            <div ref={targetReff}>
+            <div ref={targetReff} style={{
+                backgroundImage: `url(${backgroundImage})`,
+                background: `url("${backgroundImage}")`,
+                backgroundSize: "contain",
+            }}>
                 <p style={{textAlign: "right"}}><strong>Nr. fișă:</strong> {id}</p>
                 <h2><center>ACORDUL PACIENTULUI INFORMAT <br/> GENERAL </center></h2>
 

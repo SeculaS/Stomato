@@ -5,6 +5,7 @@ import {useParams} from "react-router-dom";
 import {FaDownload} from "react-icons/fa6";
 import TooltipButton from "./TooltipButton";
 import html2pdf from 'html2pdf.js';
+import backgroundImage from "./video-poster.png";
 
 export default function ViewPedo() {
     const { id } = useParams();
@@ -51,7 +52,7 @@ export default function ViewPedo() {
     const handleDownload = (acord) => {
         const element = targetReff.current;
         const options = {
-            filename: `${acord.firstName}_${acord.lastName}-${acord.consentTimestamp}_endo.pdf`,
+            filename: `${acord.firstName}_${acord.lastName}-${acord.consentTimestamp}_pedo.pdf`,
             margin:       0.5,
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2 },
@@ -64,7 +65,11 @@ export default function ViewPedo() {
 
      return (
         <div className={"form-container"} style={{maxWidth:'800px'}}>
-            <div ref={targetReff}>
+            <div ref={targetReff} style={{
+                backgroundImage: `url(${backgroundImage})`,
+                background: `url("${backgroundImage}")`,
+                backgroundSize: "contain",
+            }}>
                 <p style={{textAlign: "right"}}><strong>Nr. fișă:</strong> {id}</p>
             <h1><center>ACORDUL PACIENTULUI INFORMAT <br/> PEDODONȚIE</center></h1>
 
