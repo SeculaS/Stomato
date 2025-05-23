@@ -230,6 +230,22 @@ app.post('/submit-form-pedodontic', async (req, res) => {
                 console.log('Error in transaction:', error);
             });
     }
+    else {
+        await contractGene.methods
+            .signConsent(formData.signature, formData.signedDate)
+            .send({from: ACCOUNT_ADDRESS, gas: 5000000})
+            .on('transactionHash', (hash) => {
+                console.log('Transaction Hash:', hash);
+                formData.consent = hash.toString();
+                formData.consentTimestamp = Date.now();
+            })
+            .on('receipt', (receipt) => {
+                console.log('Transaction Receipt:', receipt);
+            })
+            .on('error', (error) => {
+                console.log('Error in transaction:', error);
+            });
+    }
     try {
         const form = new Form({ any: formData });
 

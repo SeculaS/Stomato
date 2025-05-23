@@ -25,6 +25,7 @@ export default function ModalAcorduri({ patient, acorduri, onClose }) {
         if(acord.any.formType === 'pedodontic') navigate(`/pedoview/${acord._id}`);
         else if(acord.any.formType === 'endocrinologic') navigate(`/endoview/${acord._id}`);
         else if(acord.any.formType === 'chirurgie') navigate(`/chirview/${acord._id}`);
+        else navigate(`/geneview/${acord._id}`);
     };
 
     return (
@@ -77,7 +78,7 @@ export default function ModalAcorduri({ patient, acorduri, onClose }) {
                                     navigate(`/acordchircreate/${patient.any.CNP}`);
                                 }
                                 else
-                                    alert(tip);
+                                    navigate(`/acordgenecreate/${patient.any.CNP}`);
                             }} tooltipText={"Creeaza acord"}>+</TooltipButton>
 
                             {/* Lista acorduri */}

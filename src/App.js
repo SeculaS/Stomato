@@ -12,6 +12,8 @@ import AcordEndo from "./components/AcordEndo";
 import ViewEndo from "./components/ViewEndo";
 import AcordChir from "./components/AcordChir";
 import ViewChir from "./components/ViewChir";
+import AcordGene from "./components/AcordGene";
+import ViewGene from "./components/ViewGene";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -49,6 +51,10 @@ function App() {
               element={loggedIn ? <AcordChir /> : <Navigate to="/" />}
           />
           <Route
+              path="/acordgenecreate/:cnp"
+              element={loggedIn ? <AcordGene /> : <Navigate to="/" />}
+          />
+          <Route
               path="/pedoview/:id"
               element={loggedIn ? <ViewPedo /> : <Navigate to="/" />}
           />
@@ -59,6 +65,11 @@ function App() {
           <Route
               path="/chirview/:id"
               element={loggedIn ? <ViewChir /> : <Navigate to="/" />}
+          />
+
+          <Route
+              path="/geneview/:id"
+              element={loggedIn ? <ViewGene /> : <Navigate to="/" />}
           />
       </Routes>
     </Router>
