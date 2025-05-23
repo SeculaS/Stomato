@@ -121,7 +121,8 @@ export default function AcordGene() {
             const canvas = canvasRef.current;
             const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
             let imgData = new FormData();
-            imgData.append('img', blob);
+            let str = formData.firstName+formData.lastName+formData.formType;
+            imgData.append('img', blob, 'signature' + str);
 
             const res = await fetch('http://localhost:4000/upload', {
                 method: 'POST',
