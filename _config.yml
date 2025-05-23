@@ -1,0 +1,7 @@
+exclude:
+  - node_modules
+  - server/node_modules
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE
