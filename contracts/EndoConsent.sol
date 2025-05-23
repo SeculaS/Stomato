@@ -7,7 +7,9 @@ contract EndoConsent {
         string dateSigned;
         bool agreed;
     }
+    constructor() {
 
+    }
     mapping(address => Consent) public consents;
 
     event ConsentSigned(address patient, string name, string dateSigned);
@@ -17,7 +19,8 @@ contract EndoConsent {
         emit ConsentSigned(msg.sender, _name, _date);
     }
 
-    function getConsent(address patient) public view returns (Consent memory) {
-        return consents[patient];
+    function getConsent(address patient) public view returns (string memory, string memory, bool) {
+        Consent memory c = consents[patient];
+        return (c.patientName, c.dateSigned, c.agreed);
     }
 }

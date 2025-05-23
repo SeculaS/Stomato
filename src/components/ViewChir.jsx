@@ -4,7 +4,9 @@ import {useParams} from "react-router-dom";
 
 import {FaDownload} from "react-icons/fa6";
 import TooltipButton from "./TooltipButton";
+
 import html2pdf from 'html2pdf.js';
+
 import backgroundImage from "./video-poster.png";
 
 export default function ViewChir() {

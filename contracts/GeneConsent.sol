@@ -8,6 +8,9 @@ contract GeneConsent {
         bool agreed;
     }
 
+    constructor() {
+
+    }
     mapping(address => Consent) public consents;
 
     event ConsentSigned(address patient, string name, string dateSigned);

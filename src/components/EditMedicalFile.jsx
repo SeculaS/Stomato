@@ -96,10 +96,6 @@ export default function EditMedicalFile() {
             return;
         }
 
-        if (!isCurrentDate(formData.signedDate)) {
-            alert("Se poate semna doar la data curentă!");
-            return;
-        }
 
         if (formData.gumBleeding.length < 1 || formData.toothSensitivity.length < 1 ||
             formData.bruxism.length < 1 || formData.orthoProblems.length < 1) {
@@ -122,7 +118,6 @@ export default function EditMedicalFile() {
                 return;
             }
 
-            const data = await response.json();
             alert('Pacient actualizat cu succes!');
             navigate('/patienti')
         } catch (error) {
@@ -385,12 +380,6 @@ function isValidBirthDate(dateString) {
     return date <= today;
 }
 
-function isCurrentDate(dateString) {
-    const date = new Date(dateString);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return date.getDate() === today.getDate();
-}
 
 function isOver18(birthDateString) {
     const birthDate = new Date(birthDateString);
