@@ -10,6 +10,7 @@ import AcordPedo from "./components/AcordPedo";
 import ViewPedo from "./components/ViewPedo";
 import AcordEndo from "./components/AcordEndo";
 import ViewEndo from "./components/ViewEndo";
+import AcordChir from "./components/AcordChir";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -41,6 +42,10 @@ function App() {
           <Route
               path="/acordendocreate/:cnp"
               element={loggedIn ? <AcordEndo /> : <Navigate to="/" />}
+          />
+          <Route
+              path="/acordchircreate/:cnp"
+              element={loggedIn ? <AcordChir /> : <Navigate to="/" />}
           />
           <Route
               path="/pedoview/:id"

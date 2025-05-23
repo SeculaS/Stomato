@@ -34,7 +34,7 @@ export default function ModalAcorduri({ patient, acorduri, onClose }) {
         }}>
             <div style={{
                 background: 'white', padding: 20, borderRadius: 10,
-                minWidth: 900, textAlign: 'center', maxHeight: '80vh', overflowY: 'auto'
+                minWidth: 1200, textAlign: 'center', maxHeight: '80vh', overflowY: 'auto'
             }}>
                 <h3>Acordurile pacientului: {patient.any.firstName} {patient.any.lastName}</h3>
 
@@ -71,6 +71,9 @@ export default function ModalAcorduri({ patient, acorduri, onClose }) {
                                 }
                                 else if (tip === 'endocrinologic') {
                                     navigate(`/acordendocreate/${patient.any.CNP}`);
+                                }
+                                else if(tip === 'chirurgie') {
+                                    navigate(`/acordchircreate/${patient.any.CNP}`);
                                 }
                                 else
                                     alert(tip);
