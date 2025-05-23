@@ -24,6 +24,7 @@ export default function ModalAcorduri({ patient, acorduri, onClose }) {
         console.log("Generează PDF pentru:", acord._id);
         if(acord.any.formType === 'pedodontic') navigate(`/pedoview/${acord._id}`);
         else if(acord.any.formType === 'endocrinologic') navigate(`/endoview/${acord._id}`);
+        else if(acord.any.formType === 'chirurgie') navigate(`/chirview/${acord._id}`);
     };
 
     return (

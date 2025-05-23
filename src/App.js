@@ -11,6 +11,7 @@ import ViewPedo from "./components/ViewPedo";
 import AcordEndo from "./components/AcordEndo";
 import ViewEndo from "./components/ViewEndo";
 import AcordChir from "./components/AcordChir";
+import ViewChir from "./components/ViewChir";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -54,6 +55,10 @@ function App() {
           <Route
               path="/endoview/:id"
               element={loggedIn ? <ViewEndo /> : <Navigate to="/" />}
+          />
+          <Route
+              path="/chirview/:id"
+              element={loggedIn ? <ViewChir /> : <Navigate to="/" />}
           />
       </Routes>
     </Router>
