@@ -45,9 +45,8 @@ app.use('/uploads', express.static('uploads'));
 const storage = multer.diskStorage({
     destination: (req, file, cb) => cb(null, 'uploads/'),
     filename: (req, file, cb) => {
-        const uniqueName = Date.now().toString();
-        const ext = path.extname(file.originalname) || '.png';
-        cb(null, `${uniqueName}${ext}`);
+        const originalName = file.originalname; // 👈 Numele din frontend
+        cb(null, originalName);
     }
 });
 

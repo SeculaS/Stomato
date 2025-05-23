@@ -121,8 +121,7 @@ export default function AcordEndo() {
             const canvas = canvasRef.current;
             const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
             let imgData = new FormData();
-            let str = formData.firstName+formData.lastName+formData.formType;
-            imgData.append('img', blob, 'signature' + str);
+            imgData.append('img', blob, `signature-${Date.now()}_${formData.firstName}${formData.lastName}${formData.formType}.png`);
 
 
 
