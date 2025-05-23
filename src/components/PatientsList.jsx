@@ -4,7 +4,7 @@ import {FaPenToSquare, FaTrashCan, FaFilePdf} from "react-icons/fa6";
 import TooltipButton from "./TooltipButton";
 import ModalAcorduri from "./ModalAcorduri"; //
 
-export default function PatientsList({ onEdit }) {
+export default function PatientsList() {
     const [patients, setPatients] = useState([]);
     const navigate = useNavigate();
     const [selectedPatient, setSelectedPatient] = useState(null);
@@ -17,7 +17,7 @@ export default function PatientsList({ onEdit }) {
     const fetchPatients = async () => {
         try {
             const res = await fetch('http://localhost:4000/get-patients');
-            if (!res.ok) throw new Error('Fetch failed');
+
             const data = await res.json();
             setPatients(data);
         } catch (error) {

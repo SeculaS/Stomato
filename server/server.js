@@ -1,4 +1,5 @@
 // server/server.js
+// noinspection JSCheckFunctionSignatures
 
 
 
@@ -39,6 +40,7 @@ const contractChir = new web3.eth.Contract(contractChiJSON.abi, CONSTACT_CHIR_AD
 app.use(cors());
 app.use(express.json());
 
+// noinspection JSIgnoredPromiseFromCall,JSCheckFunctionSignatures
 mongoose.connect('mongodb://127.0.0.1:27017/medical_forms', {
     useNewUrlParser: true,
     useUnifiedTopology: true,

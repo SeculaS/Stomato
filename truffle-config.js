@@ -5,8 +5,8 @@ module.exports = {
             port: 7545,
             network_id: "*",
             gas: 6721975,
-            gasPrice: 20000000000,
-        },
+            gasPrice: 20000000000
+        }
     },
     compilers: {
         solc: {
@@ -14,10 +14,10 @@ module.exports = {
             settings: {
                 optimizer: {
                     enabled: true,
-                    runs: 200,
+                    runs: 200
                 },
                 evmVersion: "london" // Helps avoid subtle opcode issues
-            },
-        },
-    },
+            }
+        }
+    }
 };
