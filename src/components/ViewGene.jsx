@@ -55,7 +55,7 @@ export default function ViewGene() {
             filename: `${acord.firstName}_${acord.lastName}-${acord.consentTimestamp}_general.pdf`,
             margin:       0.5,
             image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2 },
+            html2canvas:  { scale: 2, useCORS: true},
             jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
         };
         html2pdf().from(element).set(options).save();
@@ -291,8 +291,8 @@ export default function ViewGene() {
                         legii.
                     </p>
                 </section>
-
-                <p style={{textAlign: "right"}}><strong>Semnătura:</strong> {formData.signature}</p>
+                <br/><br/><br/>
+                <p><strong>Semnătura:</strong> <img src={formData.signature} alt={"err"}/></p>
                 <p style={{textAlign: "right"}}> <strong>Data:</strong> {formData.signedDate}</p>
                 <p style={{textAlign: "right"}}> <strong>Digitally signed(hash):</strong> {formData.consent}</p>
                 <em style={{fontSize: "10px"}}>

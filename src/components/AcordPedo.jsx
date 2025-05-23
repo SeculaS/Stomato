@@ -1,9 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import DropdownSection from "./DropdownSelection";
 export default function AcordPedo() {
     const { cnp } = useParams();
     const navigate = useNavigate();
+    const [isDrawing, setIsDrawing] = useState(false);
+    const [isSigned, setIsSigned] = useState(false);
+    const canvasRef = useRef(null);
+
     const [formData, setFormData] = useState({
         lastName: '',
         firstName: '',
@@ -46,7 +50,60 @@ export default function AcordPedo() {
         };
 
         fetchPatientData();
+        const canvas = canvasRef.current;
+        const context = canvas.getContext('2d');
+        context.lineWidth = 2;
+        context.lineCap = 'round';
+        context.strokeStyle = '#000000';
     }, [cnp]);
+    const getPos = (e) => {
+        const rect = canvasRef.current.getBoundingClientRect();
+        if (e.touches) {
+            return {
+                x: e.touches[0].clientX - rect.left,
+                y: e.touches[0].clientY - rect.top,
+            };
+        } else {
+            return {
+                x: e.nativeEvent.offsetX,
+                y: e.nativeEvent.offsetY,
+            };
+        }
+    };
+
+    const startDrawing = (e) => {
+        e.preventDefault();
+        const { x, y } = getPos(e);
+        const context = canvasRef.current.getContext('2d');
+        context.beginPath();
+        context.moveTo(x, y);
+
+        setIsDrawing(true);
+    };
+
+    const draw = (e) => {
+        e.preventDefault();
+        if (!isDrawing) return;
+        const { x, y } = getPos(e);
+        const context = canvasRef.current.getContext('2d');
+        context.lineTo(x, y);
+        setIsSigned(true);
+        context.stroke();
+    };
+
+    const stopDrawing = (e) => {
+        e.preventDefault();
+        const context = canvasRef.current.getContext('2d');
+        context.closePath();
+        setIsDrawing(false);
+    };
+
+    const clearCanvas = () => {
+        const canvas = canvasRef.current;
+        const context = canvas.getContext('2d');
+        setIsSigned(false);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -60,6 +117,24 @@ export default function AcordPedo() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            if(!isSigned) {
+                alert("Nu ati semnat documentul!");
+                return;
+            }
+            const canvas = canvasRef.current;
+            const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+            let imgData = new FormData();
+            imgData.append('img', blob);
+
+            const res = await fetch('http://localhost:4000/upload', {
+                method: 'POST',
+                body: imgData,
+            });
+
+
+            const data = await res.json();
+            formData.signature = data.imageUrl;
+
             const response = await fetch('http://localhost:4000/submit-form-pedodontic', {
                 method: 'POST',
                 headers: {
@@ -248,15 +323,33 @@ export default function AcordPedo() {
 
             <label>
                 Semnătura pacientului:
-                <input
-                    type="text"
-                    name="signature"
-                    value={formData.signature || ''}
-                    onChange={handleChange}
-                    placeholder="Introduceți numele complet"
-                    required={true} />
+
             </label>
+            <div style={{
+                padding: '16px',
+                border: '2px solid #ccc',
+                borderRadius: '8px',
+                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
+                display: 'inline-block',
+                backgroundColor: '#f9f9f9'
+            }}>
+            <canvas
+                ref={canvasRef}
+                width={700}
+                height={100}
+                className="border border-gray-300 rounded touch-none"
+                onMouseDown={startDrawing}
+                onMouseMove={draw}
+                onMouseUp={stopDrawing}
+                onMouseLeave={stopDrawing}
+                onTouchStart={startDrawing}
+                onTouchMove={draw}
+                onTouchEnd={stopDrawing}
+            />
+            </div><br/><br/>
+            <button onClick={clearCanvas} type={"button"}>Șterge semnatura</button> {' '}
             <button type="submit">Trimite</button>
+
         </form>
 
     );

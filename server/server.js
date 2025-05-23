@@ -9,6 +9,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const Web3 = require('web3');
 const cors = require('cors');
+const multer = require('multer');
+const path = require('path');
 const contractJSON = require('../build/contracts/MedicalConsent.json');
 
 const contractGenJSON = require('../build/contracts/GeneConsent.json');
@@ -39,6 +41,17 @@ const contractChir = new web3.eth.Contract(contractChiJSON.abi, CONSTACT_CHIR_AD
 
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => cb(null, 'uploads/'),
+    filename: (req, file, cb) => {
+        const uniqueName = Date.now().toString();
+        const ext = path.extname(file.originalname) || '.png';
+        cb(null, `${uniqueName}${ext}`);
+    }
+});
+
+const upload = multer({ storage });
 
 // noinspection JSIgnoredPromiseFromCall,JSCheckFunctionSignatures
 mongoose.connect('mongodb://127.0.0.1:27017/medical_forms', {
@@ -52,6 +65,12 @@ const Patient = mongoose.model('Patient', PatientSchema);
 const User = require('./models/User');
 
 const Form = require('./models/Form');
+
+
+app.post('/upload', upload.single('img'), (req, res) => {
+    const imageUrl = `http://localhost:4000/uploads/${req.file.filename}`;
+    res.json({ imageUrl });
+});
 
 app.get('/get-patients', async (req, res) => {
     try {

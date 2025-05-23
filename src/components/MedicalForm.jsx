@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import {useNavigate} from "react-router-dom";
 
 
 export default function MedicalForm() {
     const [showGDPRModal, setShowGDPRModal] = useState(false);
+    const [isDrawing, setIsDrawing] = useState(false);
+    const [isSigned, setIsSigned] = useState(false);
+    const canvasRef = useRef(null);
     const [formData, setFormData] = useState({
         lastName: '',
         firstName: '',
@@ -35,6 +38,11 @@ export default function MedicalForm() {
     const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
+      const canvas = canvasRef.current;
+      const context = canvas.getContext('2d');
+      context.lineWidth = 2;
+      context.lineCap = 'round';
+      context.strokeStyle = '#000000';
 
     setFormData(prev => ({
       ...prev,
@@ -43,7 +51,54 @@ export default function MedicalForm() {
     if(!isOver18(formData.birthDate)) formData.under18 = 'da';
     else formData.under18 = 'nu';
   };
+    const getPos = (e) => {
+        const rect = canvasRef.current.getBoundingClientRect();
+        if (e.touches) {
+            return {
+                x: e.touches[0].clientX - rect.left,
+                y: e.touches[0].clientY - rect.top,
+            };
+        } else {
+            return {
+                x: e.nativeEvent.offsetX,
+                y: e.nativeEvent.offsetY,
+            };
+        }
+    };
 
+    const startDrawing = (e) => {
+        e.preventDefault();
+        const { x, y } = getPos(e);
+        const context = canvasRef.current.getContext('2d');
+        context.beginPath();
+        context.moveTo(x, y);
+
+        setIsDrawing(true);
+    };
+
+    const draw = (e) => {
+        e.preventDefault();
+        if (!isDrawing) return;
+        const { x, y } = getPos(e);
+        const context = canvasRef.current.getContext('2d');
+        context.lineTo(x, y);
+        setIsSigned(true);
+        context.stroke();
+    };
+
+    const stopDrawing = (e) => {
+        e.preventDefault();
+        const context = canvasRef.current.getContext('2d');
+        context.closePath();
+        setIsDrawing(false);
+    };
+
+    const clearCanvas = () => {
+        const canvas = canvasRef.current;
+        const context = canvas.getContext('2d');
+        setIsSigned(false);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+    };
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!validateCNP(formData.CNP)) {
@@ -58,10 +113,7 @@ export default function MedicalForm() {
             alert("Nume sau prenume invalid!");
             return;
         }
-        if(formData.signature.length < 1){
-            alert("Semnatura invalida, scrieti numele si prenumele!");
-            return;
-        }
+
         if(formData.address.length < 1){
             alert("Adresa invalida!");
             return;
@@ -79,6 +131,24 @@ export default function MedicalForm() {
             return;
         }
         try {
+            if(!isSigned) {
+                alert("Nu ati semnat documentul!");
+                return;
+            }
+            const canvas = canvasRef.current;
+            const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+            let imgData = new FormData();
+            imgData.append('img', blob);
+
+            const res = await fetch('http://localhost:4000/upload', {
+                method: 'POST',
+                body: imgData,
+            });
+
+
+            const data = await res.json();
+            formData.signature = data.imageUrl;
+
             const response = await fetch('http://localhost:4000/submit-form', {
                 method: 'POST',
                 headers: {
@@ -350,16 +420,7 @@ export default function MedicalForm() {
     required={true} />
 </label>
 
-<label>
-  Semnătura pacientului:
-  <input
-    type="text"
-    name="signature"
-    value={formData.signature || ''}
-    onChange={handleChange}
-    placeholder="Introduceți numele complet"
-    required={true} />
-</label>
+
 
         <p style={{ fontSize: '0.9rem', textAlign: 'justify' }}>
             <strong>Scopul colectării datelor</strong> este acordarea de servicii de sănătate în condițiile legii.<br />
@@ -410,6 +471,34 @@ export default function MedicalForm() {
                 </div>
             </div>
         )}
+        <label>
+            Semnătura pacientului:
+
+        </label>
+        <div style={{
+            padding: '16px',
+            border: '2px solid #ccc',
+            borderRadius: '8px',
+            boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
+            display: 'inline-block',
+            backgroundColor: '#f9f9f9'
+        }}>
+            <canvas
+                ref={canvasRef}
+                width={400}
+                height={100}
+                className="border border-gray-300 rounded touch-none"
+                onMouseDown={startDrawing}
+                onMouseMove={draw}
+                onMouseUp={stopDrawing}
+                onMouseLeave={stopDrawing}
+                onTouchStart={startDrawing}
+                onTouchMove={draw}
+                onTouchEnd={stopDrawing}
+            />
+        </div><br/><br/>
+        <button onClick={clearCanvas} type={"button"}>Șterge semnatura</button> {' '}
+
 <button type="submit">Trimite</button>
     </form>
 
