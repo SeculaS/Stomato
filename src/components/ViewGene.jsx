@@ -162,7 +162,7 @@ export default function ViewGene() {
                             înconjurătoare (parestezie/anestezie) pe o perioadă nedeterminată de timp.
                             <br/>In cazul complicaţiilor, poate apărea necesitatea unui tratament de specialitate la un medic chirurg
                             maxilo-facial, tratament de specialitate al cărui cost intră în responsabilitatea cabinetului.
-                        </>
+                        </><br/><br/><br/><br/><br/>
                         <h3>
                             BOALA PARODONTALĂ
                         </h3>
@@ -171,8 +171,8 @@ export default function ViewGene() {
                             duce la pierderea dinţilor şi a lucrărilor dentare. Planul de tratament poate cuprinde: un program
                             de întreţinere/dispensarizare, intervenţii de scaling, chiuretaj gingival, planare radiculară şi în unele
                             cazuri intervenţii parodontale, inclusiv chirurgicale, asupra dinţilor, gingiei şi osului, adiţie osoasă şi/sau
-                            extracţii. Absenţa intervenţiei poate agrava starea de sănătate parodontală .
-                            <br/>Acestea reprezintă manopere de tratament în cadrul bolii parodontale menite a rezolva și stabiliza
+                            extracţii. Absenţa intervenţiei poate agrava starea de sănătate parodontală.
+                            <br/><br />Acestea reprezintă manopere de tratament în cadrul bolii parodontale menite a rezolva și stabiliza
                             suportul dinților. Dupa realizarea intervenţiilor de scaling, chiuretaj gingival şi planare radiculară dinţii
                             vor avea o mobilitate iniţial crescută iar gingiile se vor retrage. Rădăcinile dentare astfel expuse vor fi
                             mai sensibile. De obicei hipermobilitatea şi hipersensibilitatea se remit spontan în circa şase luni, însă pot
@@ -223,7 +223,7 @@ export default function ViewGene() {
                             profesională periodică, precum şi pentru remedierea precoce a eventualelor probleme apărute.
                             Nerespectarea acestor reguli poate determina eşecul prematur al tratamentelor, cu apariţia unor
                             complicaţii locale sau la distanţă.
-                        </>
+                        </><br/><br/><br/><br/><br/>
                         <h3>
                             FAŢETE, COROANE ŞI PUNŢI
                         </h3>
@@ -231,7 +231,7 @@ export default function ViewGene() {
                             Pentru aplicarea faţetelor/coroanelor este necesară prepararea (şlefuirea) dinţilor. Uneori forma şi
                             culoarea faţetelor/coroanelor nu coincide perfect cu forma şi culoarea dinţilor naturali, uneori va trebui
                             să purtati coroane provizorii până la aplicarea celor finale iar aceste coroane se pot descimenta uşor.
-                            <br/><br/><br/><br/>Se pot solicita modificări de formă sau culoare a noilor faţete/coroane/punţi numai înainte ca acestea să
+                            <br/>Se pot solicita modificări de formă sau culoare a noilor faţete/coroane/punţi numai înainte ca acestea să
                             fie fixate definitiv. De asemenea trebuie respectată programarea pentru cimentarea finală, deoarece
                             întârzierile pot duce la migrarea dinţilor preparaţi, limitanţi sau antagonişti breşei edentate. Aceste
                             întârzieri pot necesita refacerea faţetelor/coroanelor/punţilor cu costuri adiţionale care cad în
@@ -254,7 +254,7 @@ export default function ViewGene() {
                         </>
 
                     </>
-                </section>
+                </section><br/>
                 <section>
                     <strong>
                         Prin semnarea acestui acord informat declar ca:
@@ -291,7 +291,6 @@ export default function ViewGene() {
                         legii.
                     </p>
                 </section>
-                <br/><br/><br/>
                 <p><strong>Semnătura:</strong> <img src={formData.signature} alt={"err"}/></p>
                 <p style={{textAlign: "right"}}> <strong>Data:</strong> {formData.signedDate}</p>
                 <p style={{textAlign: "right"}}> <strong>Digitally signed(hash):</strong> {formData.consent}</p>

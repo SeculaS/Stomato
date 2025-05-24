@@ -126,10 +126,11 @@ export default function ViewEndo() {
                             (știfturile) ce reconstituie dintele este posibil să fie îndepărtate. Acest lucru poate face ca respectiva punte
                             sau coroană să fie afectată sau chiar rădăcina respectivă să sufere o fractură în încercarea de a îndepărta
                             coroana sau dispozitivul respectiv.
-                        </li>
+                        </li><br/><br/><br/><br/>
                         <li>
                             Exista posibilitatea ca în timpul tratamentului de canal, instrumentarul endodontic, să se poată rupe în
-                            interiorul canalului radicular. Acest lucru nu afectează, în cele mai multe cazuri, rezultatul pozitiv al tratamentului cu condiția să se aplice protocolul de tratament necesar. Se pot produce perforații ale
+                            interiorul canalului radicular.
+                            Acest lucru nu afectează, în cele mai multe cazuri, rezultatul pozitiv al tratamentului cu condiția să se aplice protocolul de tratament necesar. Se pot produce perforații ale
                             coroanei sau rădăcinii, uneori din cauza calcifierii canalelor este chiar imposibilă gasirea acestora.
                         </li>
                         <li>
@@ -170,7 +171,7 @@ export default function ViewEndo() {
 
                 </>
                 </section>
-                <br/><br/><br/><br/><br/><br/>
+                <br/><br/>
                 <section>
                     <strong>
                         Prin semnarea acestui acord informat declar ca:

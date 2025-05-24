@@ -172,7 +172,7 @@ export default function ViewPedo() {
                     <br/>In cazul complicaţiilor, poate apărea necesitatea unui tratament de specialitate la un medic
                     chirurg maxilo-facial, tratament de specialitate al cărui cost intră în responsabilitatea
                     cabinetului.
-                </p>
+                </p><br/><br/><br/><br/>
                 <h3>
                     SIGILAREA DINȚILOR PERMANENȚI
                 </h3>
