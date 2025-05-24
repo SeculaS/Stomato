@@ -75,9 +75,7 @@ export default function ViewGene() {
 
 
                 <p><strong>Nume Prenume pacient:</strong> {formData.firstName}{' '}{formData.lastName} </p>
-                {formData.tutor !== '' && (
-                    <p><strong>Nume Prenume tutore:</strong> {formData.tutor}</p>
-                )}
+
                 <p><strong>Domiciliu:</strong> {formData.address}</p>
 
                 <p><strong>Actul/actele medicale propuse:</strong> obturații coronare, tratamente endodontice, chirurgie dentară, tratamente
@@ -291,6 +289,9 @@ export default function ViewGene() {
                         legii.
                     </p>
                 </section>
+                {formData.tutor !== '' && (
+                    <p><strong>Nume Prenume tutore:</strong> {formData.tutor}</p>
+                )}
                 <p><strong>Semnătura:</strong> <img src={formData.signature} alt={"err"}/></p>
                 <p style={{textAlign: "right"}}> <strong>Data:</strong> {formData.signedDate}</p>
                 <p style={{textAlign: "right"}}> <strong>Digitally signed(hash):</strong> {formData.consent}</p>

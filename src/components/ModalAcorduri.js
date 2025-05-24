@@ -103,7 +103,7 @@ export default function ModalAcorduri({ patient, acorduri, onClose }) {
                     ))}
                 </div>
 
-                <button onClick={onClose} style={{ marginTop: 20 }}>Închide</button>
+                <center><button onClick={onClose} style={{ marginTop: 20 }}>Închide</button></center>
             </div>
         </div>
     );

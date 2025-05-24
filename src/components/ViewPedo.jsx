@@ -75,9 +75,7 @@ export default function ViewPedo() {
 
 
             <p><strong>Nume Prenume pacient:</strong> {formData.firstName}{' '}{formData.lastName} </p>
-            {formData.tutor !== '' && (
-                <p><strong>Nume Prenume tutore:</strong> {formData.tutor}</p>
-            )}
+
             <p><strong>Domiciliu:</strong> {formData.address}</p>
 
             <p><strong>Actul/actele medicale propuse:</strong> urgențe pedodontice, obturații coronare, tratamente endodontice, chirurgie dentară, sigilări dentare, igienizare, bruxism, aparat dentar mobil.</p>
@@ -271,7 +269,9 @@ export default function ViewPedo() {
                     legii.
                 </p>
             </section>
-
+            {formData.tutor !== '' && (
+                <p><strong>Nume Prenume tutore:</strong> {formData.tutor}</p>
+            )}
             <p><strong>Semnătura:</strong> <img src={formData.signature} alt={"err"}/></p>
 
             <p style={{textAlign: "right"}}> <strong>Data:</strong> {formData.signedDate}</p>
