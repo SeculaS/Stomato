@@ -71,6 +71,7 @@ export default function ViewChir() {
                 backgroundImage: `url(${backgroundImage})`,
                 background: `url("${backgroundImage}")`,
                 backgroundSize: "contain",
+
             }}>
                 <p style={{textAlign: "right"}}><strong>Nr. fișă:</strong> {id}</p>
                 <h2><center>ACORDUL PACIENTULUI INFORMAT <br/> CHIRURGIE </center></h2>
@@ -122,23 +123,23 @@ export default function ViewChir() {
                                 înaintea manoperei chirurgicale, este posibil să primiți medicație anxiolitică, caz în care nu este
                                 recomandat condusul niciunui mijloc de transport și nici folosirea utilajelor;
                             </li>
-                        </ul>
+                        </ul><p style={{fontSize: 12}}>
                         În cazul în care aveți o lucrare protetică provizorie, imediat după inserarea implanturilor dentare, trebuie
                         să aveți în vedere faptul că aceasta are o durată limitată de viață, 4 – 6 luni. Nefinalizarea tratamentului
                         protetic, prin neînlocuirea acestea cu o lucrare protetică definitivă pe implanturi, poate duce de la ruperea
                         lucrării inițiale până la pierderea implanturilor inserate. Lucrare protetică provizorie are rolul de a vă
                         ajuta să puteți mânca, să puteți vorbi, să puteți zâmbi și să nu aveți niciun disconfort social pe durata
                         întregului tratament.
-
+                    </p>
                     </>
                 </section>
-                <br/><br/><br/><br/><br/><br/>
-                <section>
+                <br/>
+                <section style={{fontSize:15}}>
                     <strong>
                         <p>
-                            <p>Prin semnarea acestui acord informat declar că:</p><br/>
+                            <p>Prin semnarea acestui acord informat declar că:</p>
                             <p>Am primit și înteles informațiile asupra diagnosticului, prognosticului și evoluției afecțiunilor de care sufăr, despre natura și scopul actului medical, asupra intervențiilor și strategiei de tratament propuse, asupra beneficiilor dar și a riscurilor, complicațiilor potențiale asociate actuluin medical propus.
-                            </p><br/><p>
+                            </p><p>
                             Am primit și înțeles informațiile asupra tratamentelor alternative posibile care pot fi: neefectuarea niciunui tratament, să se aștepte până simptomele devin mai clare sau extracția dintelui. În cazul neefectuării niciunui tratament,  mi s-au explicat riscurile și consecințele.
 
                         </p>
@@ -152,7 +153,6 @@ export default function ViewChir() {
                                 un chirurg maxilo facial, imi exprim acordul cu efectuarea lor în cabinetul de medicina dentara
                                 Dental Point.
                             </p>
-                            <br/>
                             <p>Am luat cunoștință că datele personale sunt păstrate în fișa pacientului, sunt arhivate și sunt utilizate la întocmirea raporturilor statistice și în scop de cercetare științifică de către instituțiile abilitate. Aceste date sunt confidențiale și nu vor fi furnizate în alte scopuri, fără avizul meu. În consecință și în condițiile precizate, îmi dau liber și în cunoștință de cauză consimțămâmtul la prelucrarea datelor personale cu caracter personal.</p>
                         </p><p>
 
@@ -166,7 +166,6 @@ export default function ViewChir() {
                         legii.
                     </p>
                 </section>
-                <br/><br/>
                 <p><strong>Semnătura:</strong> <img src={formData.signature} alt={"err"}/></p>
                 <p style={{textAlign: "right"}}> <strong>Data:</strong> {formData.signedDate}</p>
                 <p style={{textAlign: "right"}}> <strong>Digitally signed(hash):</strong> {formData.consent}</p>
