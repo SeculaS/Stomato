@@ -32,18 +32,34 @@ export default function ModalAcorduri({ patient, acorduri, onClose }) {
         <div style={{
             position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
             backgroundColor: 'rgba(0,0,0,0.6)', display: 'flex',
-            justifyContent: 'center', alignItems: 'center', zIndex: 1000
+            justifyContent: 'center', alignItems: 'center', zIndex: 1000,
+            padding: 10
         }}>
             <div style={{
-                background: 'white', padding: 20, borderRadius: 10,
-                minWidth: 1200, textAlign: 'center', maxHeight: '80vh', overflowY: 'auto'
+                background: 'white',
+                padding: 20,
+                borderRadius: 10,
+                width: '100%',
+                maxWidth: 1400,
+                maxHeight: '90vh',
+                overflowY: 'auto',
+                boxSizing: 'border-box'
             }}>
-                <h3>Acordurile pacientului: {patient.any.firstName} {patient.any.lastName}</h3>
+                <h3><center>Acordurile pacientului: {patient.any.firstName} {patient.any.lastName}</center></h3>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 20, gap: 20 }}>
+                <div style={{ display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 20,
+                    marginTop: 20,
+                    justifyContent: 'center'}}>
                     {['pedodontic', 'endocrinologic', 'general', 'chirurgie'].map((tip) => (
-                        <div key={tip} style={{ flex: 1, margin: '0 10px', border: '1px solid #ccc', borderRadius: 8, padding: 10 }}>
-                            <h4>Acorduri {tip.charAt(0).toUpperCase() + tip.slice(1)}</h4>
+                        <div key={tip} style={{flex: '1 1 300px',
+                            border: '1px solid #ccc',
+                            borderRadius: 8,
+                            padding: 10,
+                            minWidth: 200,
+                            maxWidth: 300}}>
+                            <h4>Acorduri {tip.charAt(0).toUpperCase() + tip.slice(1)}{(tip !=='chirurgie' && <>e</>)}</h4>
                             <hr />
                             {(grouped[tip] || []).map(acord => (
                                 <a
@@ -67,7 +83,7 @@ export default function ModalAcorduri({ patient, acorduri, onClose }) {
 
                             {(!grouped[tip] || grouped[tip].length === 0) && <p style={{ fontStyle: 'italic', color: '#888' }}>Niciun acord</p>}
                             {/* Buton creare nou */}
-                            <TooltipButton style={{ marginBottom: 10 }} onClick={() => {
+                            <center><TooltipButton style={{ marginBottom: 10 }} onClick={() => {
                                 if(tip === 'pedodontic') {
                                     navigate(`/acordpedocreate/${patient.any.CNP}`);
                                 }
@@ -79,7 +95,7 @@ export default function ModalAcorduri({ patient, acorduri, onClose }) {
                                 }
                                 else
                                     navigate(`/acordgenecreate/${patient.any.CNP}`);
-                            }} tooltipText={"Creeaza acord"}>+</TooltipButton>
+                            }} tooltipText={"Creeaza acord"}>+</TooltipButton></center>
 
                             {/* Lista acorduri */}
 
