@@ -4,12 +4,15 @@ import TooltipButton from "./TooltipButton";
 import {FaArrowLeft} from "react-icons/fa6";
 import {FaArrowRight} from "react-icons/fa6";
 import {FaCheckCircle} from "react-icons/fa";
+import axios from "axios";
 
 export default function MedicalForm() {
     const [showGDPRModal, setShowGDPRModal] = useState(false);
     const [isDrawing, setIsDrawing] = useState(false);
     const [isSigned, setIsSigned] = useState(false);
     const canvasRef = useRef(null);
+    const [cnp, setCnp] = useState(null);
+    const [message, setMessage] = useState('');
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         lastName: '',
@@ -109,10 +112,12 @@ export default function MedicalForm() {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         if (!validateCNP(formData.CNP)) {
             alert("CNP invalid! Verifică formatul și cifra de control.");
             return;
         }
+        setCnp(formData.CNP);
         if (!isOver18(formData.birthDate) && (!validateCNP(formData.tutoreCNP) || formData.tutoreNume.length < 1)) {
             alert("CNP sau nume tutore invalid!");
             return;
@@ -139,6 +144,20 @@ export default function MedicalForm() {
             return;
         }
         try {
+            await axios.post('http://localhost:4000/check-cnp', { cnp });
+            setMessage('DISP'); // "CNP-ul este disponibil."
+        } catch (err) {
+            if (err.response && err.response.data.error) {
+                setMessage(err.response.data.error); // "CNP-ul există deja"
+            } else {
+                setMessage('Eroare la conectare cu serverul.');
+            }
+        }
+        try {
+            if(message !== 'DISP') {
+                alert(message);
+                return;
+            }
             if(!isSigned) {
                 alert("Nu ati semnat documentul!");
                 return;

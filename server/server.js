@@ -70,6 +70,26 @@ app.post('/upload', upload.single('img'), (req, res) => {
     const imageUrl = `http://localhost:4000/uploads/${req.file.filename}`;
     res.json({ imageUrl });
 });
+app.post('/check-cnp', async (req, res) => {
+    const { cnp } = req.body;
+
+    if (!cnp) {
+        return res.status(400).json({ error: 'CNP-ul este necesar.' });
+    }
+
+    try {
+        const existingUser = await Patient.findOne({ "any.CNP": cnp });
+
+        if (existingUser) {
+            return res.status(409).json({ error: 'CNP-ul există deja în baza de date.' });
+        }
+
+        res.status(200).json({ message: 'CNP-ul este disponibil.' });
+    } catch (err) {
+        res.status(500).json({ error: 'Eroare la verificarea CNP-ului.' });
+    }
+});
+
 
 app.get('/get-patients', async (req, res) => {
     try {
@@ -134,7 +154,7 @@ app.delete('/delete-patient/:cnp', async (req, res) => {
 
     try {
 
-        const deletedPatient = await Patient.findOneAndDelete({ 'any.cnp': cnp });
+        const deletedPatient = await Patient.findOneAndDelete({ 'any.CNP': cnp });
 
 
         if (!deletedPatient) {
