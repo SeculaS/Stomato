@@ -48,6 +48,7 @@ export default function MedicalForm() {
 
     const handleChange = (e) => {
     const { name, value } = e.target;
+        setCnp(formData.CNP);
       const canvas = canvasRef.current;
       if(canvas) {
           const context = canvas.getContext('2d');
