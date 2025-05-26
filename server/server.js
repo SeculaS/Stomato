@@ -92,14 +92,25 @@ app.post('/check-cnp', async (req, res) => {
 
 
 app.get('/get-patients', async (req, res) => {
+    const q = req.query.q || '';
+    const regex = new RegExp(q, 'i'); // case-insensitive
+
     try {
-        const patients = await Patient.find();
-        res.json(patients);
+        const results = await Patient.find({
+            $or: [
+                { 'any.firstName': regex },
+                { 'any.lastName': regex },
+                { 'any.CNP': regex }
+            ]
+        });
+
+        res.json(results);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Eroare la obținerea pacienților.' });
+        console.error('Eroare la căutare pacienți:', error);
+        res.status(500).json({ error: 'Eroare server' });
     }
 });
+
 app.put('/update-patient/:cnp', async (req, res) => {
     const cnp = req.params.cnp;
     const updatedData = req.body; // datele noi trimise de client

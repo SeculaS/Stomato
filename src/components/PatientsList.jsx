@@ -1,29 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {FaPenToSquare, FaTrashCan, FaFilePdf} from "react-icons/fa6";
+import {FaPenToSquare, FaTrashCan, FaFilePdf, FaMagnifyingGlass} from "react-icons/fa6";
 import TooltipButton from "./TooltipButton";
 import ModalAcorduri from "./ModalAcorduri"; //
-
+let debounceTimer;
 export default function PatientsList() {
     const [patients, setPatients] = useState([]);
     const navigate = useNavigate();
     const [selectedPatient, setSelectedPatient] = useState(null);
     const [acorduri, setAcorduri] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    useEffect(() => {
-        fetchPatients();
-    }, []);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [triggered, setTriggered] = useState(false);
 
-    const fetchPatients = async () => {
+    const fetchPatients = async (query = '') => {
         try {
-            const res = await fetch('http://localhost:4000/get-patients');
-
+            const res = await fetch(`http://localhost:4000/get-patients?q=${encodeURIComponent(query)}`);
             const data = await res.json();
             setPatients(data);
         } catch (error) {
-            console.error('Eroare la încărcarea pacienților:', error);
+            console.error('Eroare la fetch:', error);
         }
     };
+
+    useEffect(() => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            fetchPatients(searchTerm);
+        }, 300); // 300ms întârziere
+        return () => clearTimeout(debounceTimer);
+    }, [searchTerm]);
+
     const handleEdit = (cnp) => {
         navigate(`/edit/${cnp}`);
     };
@@ -74,6 +81,19 @@ export default function PatientsList() {
 
     return (
         <div className={"form-container"} style={{maxWidth:'1200px'}}>
+            <div style={{ marginBottom: '20px' }}>
+
+                {triggered === true && ( <><input
+                    type="text"
+                    placeholder="Caută pacient după nume sau CNP..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    style={{ padding: '8px', marginBottom: '15px', width: '90%' }}
+                />
+                </> )}
+                <TooltipButton onClick={r=> setTriggered(!triggered)} tooltipText={"Search patient"} style={{ padding: '8px'}}><FaMagnifyingGlass/></TooltipButton>
+            </div>
+
             <h2>Lista Pacienților</h2>
             <>
                 <table border="1" cellPadding="8" style={{ borderCollapse: 'collapse', width: '100%' }}>
