@@ -27,7 +27,7 @@ export default function PatientsList() {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(() => {
             fetchPatients(searchTerm);
-        }, 300); // 300ms întârziere
+        }, 300);
         return () => clearTimeout(debounceTimer);
     }, [searchTerm]);
 
