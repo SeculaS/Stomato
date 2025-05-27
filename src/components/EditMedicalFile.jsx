@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import {useNavigate, useParams} from "react-router-dom";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 export default function EditMedicalFile() {
     const { cnp } = useParams();
     const navigate = useNavigate();
@@ -35,7 +36,7 @@ export default function EditMedicalFile() {
 
         const fetchPatientData = async () => {
             try {
-                const response = await fetch(`http://localhost:4000/get-form-data?cnp=${encodeURIComponent(cnp)}`);
+                const response = await fetch(`${backendUrl}/get-form-data?cnp=${encodeURIComponent(cnp)}`);
                 if (!response.ok) {
                     const errorData = await response.json();
                     alert(errorData.error || 'Eroare la încărcarea datelor!');
@@ -104,7 +105,7 @@ export default function EditMedicalFile() {
         }
 
         try {
-            const response = await fetch(`http://localhost:4000/update-patient/${encodeURIComponent(formData.CNP)}`, {
+            const response = await fetch(`${backendUrl}/update-patient/${encodeURIComponent(formData.CNP)}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

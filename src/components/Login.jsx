@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 export default function Login({ onLogin }) {
     const [username, setUsername] = useState('');
@@ -10,11 +11,13 @@ export default function Login({ onLogin }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:4000/login', { username, password });
+            await axios.post(`${backendUrl}/login`, { username, password });
             onLogin();
             navigate('/patienti');
+            console.log(backendUrl);
         } catch (error) {
             alert('Date de conectare incorecte!');
+            console.log(backendUrl);
         }
     };
 

@@ -5,7 +5,7 @@ import {FaArrowLeft} from "react-icons/fa6";
 import {FaArrowRight} from "react-icons/fa6";
 import {FaCheckCircle} from "react-icons/fa";
 import axios from "axios";
-
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 export default function MedicalForm() {
     const [showGDPRModal, setShowGDPRModal] = useState(false);
     const [isDrawing, setIsDrawing] = useState(false);
@@ -145,7 +145,7 @@ export default function MedicalForm() {
             return;
         }
         try {
-            await axios.post('http://localhost:4000/check-cnp', { cnp });
+            await axios.post(`${backendUrl}/check-cnp`, { cnp });
             setMessage('DISP'); // "CNP-ul este disponibil."
         } catch (err) {
             if (err.response && err.response.data.error) {
@@ -168,7 +168,7 @@ export default function MedicalForm() {
             let imgData = new FormData();
             imgData.append('img', blob, `signature-${Date.now()}_${formData.firstName}${formData.lastName}${formData.formType}.png`);
 
-            const res = await fetch('http://localhost:4000/upload', {
+            const res = await fetch(`${backendUrl}/upload`, {
                 method: 'POST',
                 body: imgData,
             });
@@ -177,7 +177,7 @@ export default function MedicalForm() {
             const data = await res.json();
             formData.signature = data.imageUrl;
 
-            const response = await fetch('http://localhost:4000/submit-form', {
+            const response = await fetch(`${backendUrl}/submit-form`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -652,19 +652,11 @@ export default function MedicalForm() {
 
 }
 
-function validateCNP(cnp) {
-    if (!/^\d{13}$/.test(cnp)) return false;
+function validateCNP(cnp_val) {
+    console.log(cnp_val);
+    console.log(cnp_val.length);
+    return cnp_val.length === 13;
 
-    const controlKey = "279146358279";
-    const cnpDigits = cnp.split("").map(Number);
-    const sum = cnpDigits.slice(0, 12).reduce((acc, digit, i) => {
-        return acc + digit * Number(controlKey[i]);
-    }, 0);
-
-    const remainder = sum % 11;
-    const controlDigit = remainder === 10 ? 1 : remainder;
-
-    return controlDigit === cnpDigits[12];
 }
 
 function isValidBirthDate(dateString) {

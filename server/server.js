@@ -1,7 +1,7 @@
 // server/server.js
 // noinspection JSCheckFunctionSignatures
 
-
+const backendUrl = 'http://192.168.1.130:4000';
 
 
 const express = require('express');
@@ -39,7 +39,9 @@ const contractGene = new web3.eth.Contract(contractGenJSON.abi, CONSTACT_GENE_AD
 const contractChir = new web3.eth.Contract(contractChiJSON.abi, CONSTACT_CHIR_ADDRESS);
 
 
-app.use(cors());
+app.use(cors({
+    origin: '*',
+}));
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 const storage = multer.diskStorage({
@@ -67,7 +69,7 @@ const Form = require('./models/Form');
 
 
 app.post('/upload', upload.single('img'), (req, res) => {
-    const imageUrl = `http://localhost:4000/uploads/${req.file.filename}`;
+    const imageUrl = `${backendUrl}/uploads/${req.file.filename}`;
     res.json({ imageUrl });
 });
 app.post('/check-cnp', async (req, res) => {
@@ -312,6 +314,6 @@ app.post('/submit-form-pedodontic', async (req, res) => {
 });
 
 
-app.listen(PORT, () => {
+app.listen(PORT,  () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });

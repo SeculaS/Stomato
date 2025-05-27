@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import DropdownSection from "./DropdownSelection";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 export default function AcordGene() {
     const { cnp } = useParams();
     const navigate = useNavigate();
@@ -27,7 +28,7 @@ export default function AcordGene() {
 
         const fetchPatientData = async () => {
             try {
-                const response = await fetch(`http://localhost:4000/get-form-data?cnp=${encodeURIComponent(cnp)}`);
+                const response = await fetch(`${backendUrl}/get-form-data?cnp=${encodeURIComponent(cnp)}`);
                 if (!response.ok) {
                     const errorData = await response.json();
                     alert(errorData.error || 'Eroare la încărcarea datelor!');
@@ -124,7 +125,7 @@ export default function AcordGene() {
 
             imgData.append('img', blob, `signature-${Date.now()}_${formData.firstName}${formData.lastName}${formData.formType}.png`);
 
-            const res = await fetch('http://localhost:4000/upload', {
+            const res = await fetch(`${backendUrl}/upload`, {
                 method: 'POST',
                 body: imgData,
             });
@@ -133,7 +134,7 @@ export default function AcordGene() {
             const data = await res.json();
             formData.signature = data.imageUrl;
 
-            const response = await fetch('http://localhost:4000/submit-form-pedodontic', {
+            const response = await fetch(`${backendUrl}/submit-form-pedodontic`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

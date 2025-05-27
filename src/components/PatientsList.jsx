@@ -4,6 +4,7 @@ import {FaPenToSquare, FaTrashCan, FaFilePdf, FaMagnifyingGlass} from "react-ico
 import TooltipButton from "./TooltipButton";
 import ModalAcorduri from "./ModalAcorduri"; //
 let debounceTimer;
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 export default function PatientsList() {
     const [patients, setPatients] = useState([]);
     const navigate = useNavigate();
@@ -15,7 +16,7 @@ export default function PatientsList() {
 
     const fetchPatients = async (query = '') => {
         try {
-            const res = await fetch(`http://localhost:4000/get-patients?q=${encodeURIComponent(query)}`);
+            const res = await fetch(`${backendUrl}/get-patients?q=${encodeURIComponent(query)}`);
             const data = await res.json();
             setPatients(data);
         } catch (error) {
@@ -39,7 +40,7 @@ export default function PatientsList() {
 
         const handleLoadAcorduri = async () => {
             try {
-                const res = await fetch('http://localhost:4000/api/acorduri', {
+                const res = await fetch(`${backendUrl}/api/acorduri`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -68,7 +69,7 @@ export default function PatientsList() {
     const handleDelete = async (cnp) => {
         if (!window.confirm('Ești sigur că vrei să ștergi pacientul?')) return;
         try {
-            const res = await fetch(`http://localhost:4000/delete-patient/${cnp}`, { method: 'DELETE' });
+            const res = await fetch(`${backendUrl}/delete-patient/${cnp}`, { method: 'DELETE' });
             if (res.ok) {
                 await fetchPatients(); // reîncarcă lista după ștergere
             } else {

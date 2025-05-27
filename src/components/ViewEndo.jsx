@@ -6,7 +6,7 @@ import {FaDownload} from "react-icons/fa6";
 import TooltipButton from "./TooltipButton";
 import html2pdf from 'html2pdf.js';
 import backgroundImage from "./video-poster.png"
-
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 export default function ViewEndo() {
     const { id } = useParams();
     const targetReff = useRef({});
@@ -30,7 +30,7 @@ export default function ViewEndo() {
 
         const fetchPatientData = async () => {
             try {
-                const response = await fetch(`http://localhost:4000/get-form-data-fromid?id=${encodeURIComponent(id)}`);
+                const response = await fetch(`${backendUrl}/get-form-data-fromid?id=${encodeURIComponent(id)}`);
                 if (!response.ok) {
                     const errorData = await response.json();
                     alert(errorData.error || 'Eroare la încărcarea datelor!');
