@@ -363,16 +363,13 @@ export default function EditMedicalFile() {
 }
 
 // VALIDĂRI
-function validateCNP(cnp) {
-    if (!/^\d{13}$/.test(cnp)) return false;
-    const controlKey = "279146358279";
-    const cnpDigits = cnp.split("").map(Number);
-    const sum = cnpDigits.slice(0, 12).reduce((acc, digit, i) => acc + digit * Number(controlKey[i]), 0);
-    const remainder = sum % 11;
-    const controlDigit = remainder === 10 ? 1 : remainder;
-    return controlDigit === cnpDigits[12];
-}
 
+function validateCNP(cnp_val) {
+    console.log(cnp_val);
+    console.log(cnp_val.length);
+    return cnp_val.length === 13;
+
+}
 function isValidBirthDate(dateString) {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) return false;
