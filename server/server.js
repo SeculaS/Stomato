@@ -55,10 +55,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // noinspection JSIgnoredPromiseFromCall,JSCheckFunctionSignatures
-mongoose.connect('mongodb://127.0.0.1:27017/medical_forms', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+mongoose.connect('mongodb://127.0.0.1:27017/medical_forms', { });
 
 const PatientSchema = new mongoose.Schema({ any: mongoose.Schema.Types.Mixed });
 const Patient = mongoose.model('Patient', PatientSchema);
