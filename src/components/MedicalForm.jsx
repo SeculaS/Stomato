@@ -155,7 +155,7 @@ export default function MedicalForm() {
             }
         }
         try {
-            if(message !== 'DISP') {
+            if(message !== '' && message !== 'DISP') {
                 alert(message.toString());
                 return;
             }

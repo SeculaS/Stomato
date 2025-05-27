@@ -1,7 +1,7 @@
 // server/server.js
 // noinspection JSCheckFunctionSignatures
 
-const backendUrl = 'http://192.168.1.130:4000';
+const backendUrl = 'http://localhost:4000';
 
 
 const express = require('express');
