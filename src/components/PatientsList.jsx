@@ -6,25 +6,59 @@ import ModalAcorduri from "./ModalAcorduri"; //
 let debounceTimer;
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 const PatientTreatmentModal = ({ patient, onClose }) => {
-    const [tratamente, setTratamente] = useState(patient.any.tratamente);
+    const [tratamente, setTratamente] = useState(patient.any.tratamente.toString());
 
     const handleSaveTreatment = async () => {
         const lista_tratamente = tratamente
-            .split(/[,\s]+/)
+            .split(',')
             .map(t => t.trim())
             .filter(t => t.length > 0);
-        const lista_alergii = patient.any.alergii.split(/[,\s]+/)
-            .map(t => t.trim())
-            .filter(t => t.length > 0);
+        const lista_alergii = patient.any.alergii
+            .split(',')
+            .map(a => a.trim().toLowerCase())
+            .filter(a => a.length > 0);
 
-        const alergiiLower = lista_alergii.map(a => a.toLowerCase());
+        let conflicte = [];
 
-        const conflicte = lista_tratamente.filter(t =>
-            alergiiLower.includes(t.toLowerCase())
-        );
+        try {
+            for (let tratament of lista_tratamente) {
+                const response = await fetch(`https://www.apimedic.ro/api/v1/medicine/${encodeURIComponent(tratament)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    console.warn(`Nu s-a gasit tratamentul: ${tratament} (Status ${response.status})`);
+                    continue;
+                }
+
+                const data = await response.json();
+
+                for (let medicament of data) {
+                    const keywords = (medicament.keywords || "").toLowerCase();
+                    const description = (medicament.description || "").toLowerCase();
+
+                    const conflicteGasite = lista_alergii.filter(alergie =>
+                        keywords.includes(alergie) || description.includes(alergie)
+                    );
+
+                    if (conflicteGasite.length > 0) {
+                        conflicte.push({
+                            tratament,
+                            nume_medicament: medicament.name,
+                            alergiiDetectate: conflicteGasite
+                        });
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Eroare la cautarea tratamentelor:', error);
+        }
 
         if(conflicte.length > 0) {
-            alert("Atentie! Ai adaugat un tratament la care pacientul e alergic!");
+            alert("Atentie! Ai adaugat un tratament la care pacientul e posibil sa fie alergic!");
         }
         try {
             const response = await fetch(`${backendUrl}/update-patient-field/${encodeURIComponent(patient.any.CNP)}`, {
@@ -45,6 +79,7 @@ const PatientTreatmentModal = ({ patient, onClose }) => {
             }
 
             alert('Pacient actualizat cu succes!');
+            patient.any.tratamente = tratamente;
             onClose();
         } catch (error) {
             console.error('Eroare la submit:', error);
@@ -75,7 +110,7 @@ const PatientTreatmentModal = ({ patient, onClose }) => {
                 <div className="flex gap-2 mb-4">
                     <input style={{width:'80%'}}
                         type="text"
-                        value={tratamente} onChange={e => setTratamente(e.target.value)}
+                        value={tratamente} onChange={(e) => setTratamente(e.target.value)}
                         className="flex-1 border rounded px-2 py-1"
                         placeholder="Tratamente"
                     />
@@ -128,6 +163,10 @@ export default function PatientsList() {
     const handleEdit = (cnp) => {
         navigate(`/edit/${cnp}`);
     };
+    const handleTreatmentClick = (patient) => {
+        setShowTreatmentModal(true);
+        setSelectedPatient(patient);
+    }
     const handlePdfClick = (patient) => {
         setSelectedPatient(patient);
 
@@ -210,10 +249,7 @@ export default function PatientsList() {
                                 <TooltipButton tooltipText={"Delete patient"} style={{backgroundColor: "red"}} onClick={() => handleDelete(patient.any.CNP)}><FaTrashCan  /></TooltipButton>
                                 &nbsp;
                                 <TooltipButton tooltipText={"View or generate PDFs"} style={{ backgroundColor: "darkorange" }} onClick={() => handlePdfClick(patient)}><FaFilePdf /></TooltipButton>
-                                {' '}<TooltipButton tooltipText={"Add treatment"} style={{backgroundColor: "darkblue"}} onClick={() => {
-                                    setShowTreatmentModal(true);
-                                    setSelectedPatient(patient);
-                            }}><FaUserDoctor/></TooltipButton>
+                                {' '}<TooltipButton tooltipText={"Add treatment"} style={{backgroundColor: "darkblue"}} onClick={() => handleTreatmentClick(patient)}><FaUserDoctor/></TooltipButton>
                             </center></td>
                         </tr>
                     ))}
