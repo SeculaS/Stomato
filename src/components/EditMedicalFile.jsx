@@ -60,6 +60,7 @@ export default function EditMedicalFile() {
             [name]: value
         };
         updatedFormData.under18 = isOver18(updatedFormData.birthDate) ? 'nu' : 'da';
+        if(updatedFormData.CNP.length >= 9) updatedFormData.birthDate = setBirthDate(updatedFormData.CNP);
         setFormData(updatedFormData);
     };
 
@@ -154,7 +155,7 @@ export default function EditMedicalFile() {
 
             <label>
                 Data nașterii:
-                <input name="birthDate" type="date" value={formData.birthDate} onChange={handleChange} required={true} onKeyDown={(e) => e.preventDefault()} />
+                <input name="birthDate" type="date" value={formData.birthDate} onChange={handleChange} required={true} onKeyDown={(e) => e.preventDefault()} disabled={true} />
             </label>
 
             <label>
@@ -384,4 +385,30 @@ function isOver18(birthDateString) {
     const today = new Date();
     const eighteenYearsAgo = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
     return birthDate <= eighteenYearsAgo;
+}
+function setBirthDate(cnp) {
+    const genderDigit = parseInt(cnp[0], 10);
+    const year = parseInt(cnp.slice(1, 3), 10);
+    const month = parseInt(cnp.slice(3, 5), 10);
+    const day = parseInt(cnp.slice(5, 7), 10);
+
+    let fullYear;
+
+    if (genderDigit === 1 || genderDigit === 2) {
+        fullYear = 1900 + year;
+    } else if (genderDigit === 3 || genderDigit === 4) {
+        fullYear = 1800 + year;
+    } else if (genderDigit === 5 || genderDigit === 6) {
+        fullYear = 2000 + year;
+    } else if (genderDigit === 7 || genderDigit === 8 || genderDigit === 9) {
+        fullYear = 2000 + year;
+    }
+
+    const birthDate = new Date(fullYear, month - 1, day+1); // luni de la 0 la 11
+
+    if (birthDate.getMonth() !== month - 1 || birthDate.getDate() !== day+1) {
+        return 'Data invalida';
+    }
+
+    return birthDate.toISOString().split('T')[0]; // format YYYY-MM-DD
 }
