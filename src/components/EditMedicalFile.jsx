@@ -43,7 +43,7 @@ export default function EditMedicalFile() {
                     return;
                 }
                 const data = await response.json();
-                setFormData(data.any); 
+                setFormData(data.any);
             } catch (error) {
                 console.error('Eroare la fetch:', error);
                 alert('Eroare la comunicarea cu serverul');
