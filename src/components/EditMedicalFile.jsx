@@ -273,7 +273,7 @@ export default function EditMedicalFile() {
                 <label key={index} className="checkbox">
                     <input
                         type="checkbox"
-                        checked={formData.medicalHistory[conditie] || false}
+                        checked={formData.medicalHistory?.[conditie] || false}
                         onChange={(e) => {
                             setFormData(prev => ({
                                 ...prev,
