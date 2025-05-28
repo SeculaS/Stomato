@@ -38,7 +38,9 @@ export default function MedicalForm() {
         others: '',
         under18: '',
         tutoreNume: '',
-        tutoreCNP: ''
+        tutoreCNP: '',
+        alergii: '',
+        tratamente: '',
       });
 
 
@@ -321,6 +323,10 @@ export default function MedicalForm() {
         {step === 3 && (
             <>
                 <h3>Istoric medical</h3>
+                <label>
+                    Alergii(separate prin ","):
+                    <input name="alergii" type="text" value={formData.alergii} onChange={handleChange}/>
+                </label>
                 <p>Bifați bolile pe care le aveți sau le-ați avut:</p>
 
                 {[

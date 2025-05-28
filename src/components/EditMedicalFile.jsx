@@ -29,6 +29,8 @@ export default function EditMedicalFile() {
         under18: '',
         tutoreNume: '',
         tutoreCNP: '',
+        alergii: '',
+        tratamente: '',
     });
 
     useEffect(() => {
@@ -242,6 +244,10 @@ export default function EditMedicalFile() {
             </label>
 
             <h3>Istoric medical</h3>
+            <label>
+                Alergii(separate prin ","):
+                <input name="alergii" type="text" value={formData.alergii} onChange={handleChange} />
+            </label>
             <p>Bifați bolile pe care le aveți sau le-ați avut:</p>
 
             {[

@@ -145,7 +145,27 @@ app.get('/get-form-data', async (req, res) => {
         res.status(500).json({ error: 'Eroare la extragerea datelor' });
     }
 });
+app.put('/update-patient-field/:cnp', async (req, res) => {
+    const { cnp } = req.params;
+    const { field, value } = req.body;
 
+    try {
+        const updatedPatient = await Patient.findOneAndUpdate(
+            { "any.CNP": cnp },
+            { $set: { [`any.${field}`]: value } },
+            { new: false }
+        );
+
+        if (!updatedPatient) {
+            return res.status(404).json({ error: 'Pacientul nu a fost găsit' });
+        }
+
+        return res.status(200).json({ message: 'Actualizat cu succes' });
+    } catch (err) {
+        console.error('Eroare la update:', err);
+        return res.status(500).json({ error: 'Eroare la actualizare' });
+    }
+});
 app.get('/get-form-data-fromid', async (req, res) => {
     try {
         const { id } = req.query; // <-- așa preiei cnp-ul din query
