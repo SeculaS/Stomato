@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 export default function EditMedicalFile() {
@@ -43,7 +43,7 @@ export default function EditMedicalFile() {
                     return;
                 }
                 const data = await response.json();
-                setFormData(data.any); // presupun că datele utile sunt în "any"
+                setFormData(data.any); 
             } catch (error) {
                 console.error('Eroare la fetch:', error);
                 alert('Eroare la comunicarea cu serverul');

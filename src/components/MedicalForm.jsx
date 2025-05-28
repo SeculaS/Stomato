@@ -320,7 +320,6 @@ export default function MedicalForm() {
         )}
         {step === 3 && (
             <>
-
                 <h3>Istoric medical</h3>
                 <p>Bifați bolile pe care le aveți sau le-ați avut:</p>
 
