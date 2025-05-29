@@ -104,10 +104,10 @@ const PatientTreatmentModal = ({ patient, onClose }) => {
                 overflowY: 'auto',
                 boxSizing: 'border-box'
             }}>
-                <h2 className="text-xl font-semibold mb-4">Tratamente pentru {patient.any.lastName} {patient.any.firstName}</h2>
 
-
-                <div className="flex gap-2 mb-4">
+                <h2>Tratamentele lui {patient.any.lastName} {patient.any.firstName}</h2>
+                Lista alergii: {patient.any.alergii}
+                <div>
                     <input style={{width:'80%'}}
                         type="text"
                         value={tratamente} onChange={(e) => setTratamente(e.target.value)}
@@ -121,13 +121,13 @@ const PatientTreatmentModal = ({ patient, onClose }) => {
                         <FaListCheck/>
                     </TooltipButton>
                 </div>
-
+                <center>
                 <button
                     onClick={onClose}
 
                 >
                     Close
-                </button>
+                </button></center>
             </div>
         </div>
     );
