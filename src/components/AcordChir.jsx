@@ -1,6 +1,7 @@
 import { useState, useEffect,useRef } from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import DropdownSection from "./DropdownSelection";
+import {toast} from "react-toastify";
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 export default function AcordChir() {
@@ -32,7 +33,7 @@ export default function AcordChir() {
                 const response = await fetch(`${backendUrl}/get-form-data?cnp=${encodeURIComponent(cnp)}`);
                 if (!response.ok) {
                     const errorData = await response.json();
-                    alert(errorData.error || 'Eroare la încărcarea datelor!');
+                    toast.error(errorData.error || 'Eroare la încărcarea datelor!');
                     return;
                 }
                 const data = await response.json();
@@ -46,7 +47,7 @@ export default function AcordChir() {
                 }));
             } catch (error) {
                 console.error('Eroare la fetch:', error);
-                alert('Eroare la comunicarea cu serverul');
+                toast.error('Eroare la comunicarea cu serverul');
             }
         };
 
@@ -118,7 +119,7 @@ export default function AcordChir() {
         e.preventDefault();
         try {
             if(!isSigned) {
-                alert("Nu ati semnat documentul!");
+                toast.error("Nu ati semnat documentul!");
                 return;
             }
             const canvas = canvasRef.current;
@@ -147,14 +148,14 @@ export default function AcordChir() {
             const result = await response.json();
 
             if (response.ok) {
-                alert('Formular trimis cu succes! ' + result.message);
+                toast.success('Formular trimis cu succes! ' + result.message);
                 navigate('/patienti')
             } else {
-                alert('Eroare la trimitere: ' + result.error);
+                toast.error('Eroare la trimitere: ' + result.error);
             }
         } catch (error) {
             console.error('Eroare la trimiterea datelor:', error);
-            alert('A apărut o eroare. Verifică consola pentru detalii.');
+            toast.error('A apărut o eroare. Verifică consola pentru detalii.');
         }
 
     };

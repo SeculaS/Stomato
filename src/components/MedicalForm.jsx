@@ -4,8 +4,10 @@ import TooltipButton from "./TooltipButton";
 import {FaArrowLeft} from "react-icons/fa6";
 import {FaArrowRight} from "react-icons/fa6";
 import {FaCheckCircle} from "react-icons/fa";
+import {toast} from "react-toastify";
 import axios from "axios";
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 export default function MedicalForm() {
     const [showGDPRModal, setShowGDPRModal] = useState(false);
     const [isDrawing, setIsDrawing] = useState(false);
@@ -120,33 +122,33 @@ export default function MedicalForm() {
         e.preventDefault();
 
         if (!validateCNP(formData.CNP)) {
-            alert("CNP invalid! Verifică formatul și cifra de control.");
+            toast.error("CNP invalid! Verifică formatul și cifra de control.");
             return;
         }
         setCnp(formData.CNP);
         if (!isOver18(formData.birthDate) && (!validateCNP(formData.tutoreCNP) || formData.tutoreNume.length < 1)) {
-            alert("CNP sau nume tutore invalid!");
+            toast.error("CNP sau nume tutore invalid!");
             return;
         }
         if(formData.firstName.length < 1 || formData.lastName.length < 1){
-            alert("Nume sau prenume invalid!");
+            toast.error("Nume sau prenume invalid!");
             return;
         }
 
         if(formData.address.length < 1){
-            alert("Adresa invalida!");
+            toast.error("Adresa invalida!");
             return;
         }
         if(!isValidBirthDate(formData.birthDate)) {
-            alert("Data de nastere este invalida!");
+            toast.error("Data de nastere este invalida!");
             return;
         }
         if(!isCurrentDate(formData.signedDate)) {
-            alert("Se poate semna doar la data curenta!");
+            toast.error("Se poate semna doar la data curenta!");
             return;
         }
         if(formData.gumBleeding.length < 1 || formData.toothSensitivity.length < 1 || formData.bruxism.length < 1 || formData.orthoProblems.length < 1){
-            alert("Nu ai raspuns la \"Intrebari despre sanatatea orala\"!");
+            toast.error("Nu ai raspuns la \"Intrebari despre sanatatea orala\"!");
             return;
         }
         try {
@@ -161,11 +163,11 @@ export default function MedicalForm() {
         }
         try {
             if(message !== '' && message !== 'DISP') {
-                alert(message.toString());
+                toast.error(message.toString());
                 return;
             }
             if(!isSigned) {
-                alert("Nu ati semnat documentul!");
+                toast.error("Nu ati semnat documentul!");
                 return;
             }
             const canvas = canvasRef.current;
@@ -193,14 +195,14 @@ export default function MedicalForm() {
             const result = await response.json();
 
             if (response.ok) {
-                alert('Formular trimis cu succes! ' + result.message);
+                toast.success('Formular trimis cu succes! ' + result.message);
                 navigate('/patienti')
             } else {
-                alert('Eroare la trimitere: ' + result.error);
+                toast.error('Eroare la trimitere: ' + result.error);
             }
         } catch (error) {
             console.error('Eroare la trimiterea datelor:', error);
-            alert('A apărut o eroare. Verifică consola pentru detalii.');
+            toast.error('A apărut o eroare.');
         }
     };
 

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import {toast} from "react-toastify";
+
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 export default function Login({ onLogin }) {
@@ -16,7 +18,7 @@ export default function Login({ onLogin }) {
             navigate('/patienti');
             console.log(backendUrl);
         } catch (error) {
-            alert('Date de conectare incorecte!');
+            toast.error('Date de conectare incorecte!');
             console.log(backendUrl);
         }
     };

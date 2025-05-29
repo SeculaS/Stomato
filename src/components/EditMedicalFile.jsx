@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {useNavigate, useParams} from "react-router-dom";
+import {toast} from "react-toastify";
+
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 export default function EditMedicalFile() {
     const { cnp } = useParams();
     const navigate = useNavigate();
@@ -41,14 +44,14 @@ export default function EditMedicalFile() {
                 const response = await fetch(`${backendUrl}/get-form-data?cnp=${encodeURIComponent(cnp)}`);
                 if (!response.ok) {
                     const errorData = await response.json();
-                    alert(errorData.error || 'Eroare la încărcarea datelor!');
+                    toast.error(errorData.error || 'Eroare la încărcarea datelor!');
                     return;
                 }
                 const data = await response.json();
                 setFormData(data.any);
             } catch (error) {
                 console.error('Eroare la fetch:', error);
-                alert('Eroare la comunicarea cu serverul');
+                toast.error('Eroare la comunicarea cu serverul');
             }
         };
 
@@ -70,40 +73,40 @@ export default function EditMedicalFile() {
         e.preventDefault();
 
         if (!validateCNP(formData.CNP)) {
-            alert("CNP invalid!");
+            toast.error("CNP invalid!");
             return;
         }
 
         if (!isOver18(formData.birthDate) &&
             (!validateCNP(formData.tutoreCNP) || formData.tutoreNume.length < 1)) {
-            alert("CNP sau nume tutore invalid!");
+            toast.error("CNP sau nume tutore invalid!");
             return;
         }
 
         if (formData.firstName.length < 1 || formData.lastName.length < 1) {
-            alert("Nume sau prenume invalid!");
+            toast.error("Nume sau prenume invalid!");
             return;
         }
 
         if (formData.signature.length < 1) {
-            alert("Semnătura invalidă!");
+            toast.error("Semnătura invalidă!");
             return;
         }
 
         if (formData.address.length < 1) {
-            alert("Adresă invalidă!");
+            toast.error("Adresă invalidă!");
             return;
         }
 
         if (!isValidBirthDate(formData.birthDate)) {
-            alert("Data de naștere este invalidă!");
+            toast.error("Data de naștere este invalidă!");
             return;
         }
 
 
         if (formData.gumBleeding.length < 1 || formData.toothSensitivity.length < 1 ||
             formData.bruxism.length < 1 || formData.orthoProblems.length < 1) {
-            alert("Nu ai răspuns la toate întrebările despre sănătatea orală!");
+            toast.error("Nu ai răspuns la toate întrebările despre sănătatea orală!");
             return;
         }
 
@@ -118,15 +121,15 @@ export default function EditMedicalFile() {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                alert(errorData.message || 'Eroare la actualizarea pacientului!');
+                toast.error(errorData.message || 'Eroare la actualizarea pacientului!');
                 return;
             }
 
-            alert('Pacient actualizat cu succes!');
+            toast.success('Pacient actualizat cu succes!');
             navigate('/patienti')
         } catch (error) {
             console.error('Eroare la submit:', error);
-            alert('Eroare la comunicarea cu serverul!');
+            toast.error('Eroare la comunicarea cu serverul!');
         }
     };
 

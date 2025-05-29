@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {FaPenToSquare, FaTrashCan, FaFilePdf, FaMagnifyingGlass, FaUserDoctor, FaListCheck} from "react-icons/fa6";
 import TooltipButton from "./TooltipButton";
 import ModalAcorduri from "./ModalAcorduri"; //
+import {toast} from "react-toastify";
 let debounceTimer;
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 const PatientTreatmentModal = ({ patient, onClose }) => {
@@ -58,9 +59,12 @@ const PatientTreatmentModal = ({ patient, onClose }) => {
         }
 
         if(conflicte.length > 0) {
-            alert("Atentie! Ai adaugat un tratament la care pacientul e posibil sa fie alergic!");
+            toast.warn("Atentie! Ai adaugat un tratament la care pacientul e posibil sa fie alergic!");
+
         }
         try {
+            onClose();
+            toast.success('Pacient actualizat cu succes!');
             const response = await fetch(`${backendUrl}/update-patient-field/${encodeURIComponent(patient.any.CNP)}`, {
                 method: 'PUT', // sau PATCH, dacă backend-ul o permite
                 headers: {
@@ -74,16 +78,16 @@ const PatientTreatmentModal = ({ patient, onClose }) => {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                alert(errorData.message || 'Eroare la actualizarea pacientului!');
+                toast.error(errorData.message || 'Eroare la actualizarea pacientului!');
                 return;
             }
 
-            alert('Pacient actualizat cu succes!');
+
             patient.any.tratamente = tratamente;
-            onClose();
+
         } catch (error) {
             console.error('Eroare la submit:', error);
-            alert('Eroare la comunicarea cu serverul!');
+            toast.error('Eroare la comunicarea cu serverul!');
         }
     }
 

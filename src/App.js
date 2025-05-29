@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 import Login from './components/Login';
 import './App.css';
 import PatientsList from './components/PatientsList';
@@ -72,6 +73,14 @@ function App() {
               element={loggedIn ? <ViewGene /> : <Navigate to="/" />}
           />
       </Routes>
+      <ToastContainer  position="top-right"
+                       autoClose={3000}
+                       hideProgressBar={false}
+                       newestOnTop={true}
+                       closeOnClick
+                       pauseOnHover
+                       theme="light"
+      />
     </Router>
   );
 }

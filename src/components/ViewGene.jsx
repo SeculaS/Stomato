@@ -6,6 +6,8 @@ import {FaDownload} from "react-icons/fa6";
 import TooltipButton from "./TooltipButton";
 import html2pdf from 'html2pdf.js';
 import backgroundImage from "./video-poster.png";
+import {toast} from "react-toastify";
+
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 export default function ViewGene() {
     const { id } = useParams();
@@ -33,14 +35,14 @@ export default function ViewGene() {
                 const response = await fetch(`${backendUrl}/get-form-data-fromid?id=${encodeURIComponent(id)}`);
                 if (!response.ok) {
                     const errorData = await response.json();
-                    alert(errorData.error || 'Eroare la încărcarea datelor!');
+                    toast.error(errorData.error || 'Eroare la încărcarea datelor!');
                     return;
                 }
                 const data = await response.json();
                 setFormData(data.any);
             } catch (error) {
                 console.error('Eroare la fetch:', error);
-                alert('Eroare la comunicarea cu serverul');
+                toast.error('Eroare la comunicarea cu serverul');
             }
         };
 
