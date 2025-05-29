@@ -1,6 +1,8 @@
 // server/server.js
 // noinspection JSCheckFunctionSignatures
 
+const { _mail, _pwd } = require('./mailerData');
+
 const backendUrl = 'http://localhost:4000';
 
 
@@ -12,6 +14,30 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const contractJSON = require('../build/contracts/MedicalConsent.json');
+const nodemailer = require('nodemailer');
+
+async function sentEmail(text_mail, to_mail) {
+
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: _mail,
+            pass: _pwd,
+        },
+    });
+    try {
+        await transporter.sendMail({
+            from: '"Dental Point Patient Manager" <simaiulian04@gmail.com>',
+            to: to_mail,
+            subject: 'Actualizare tratement',
+            text: text_mail,
+        });
+        //console.log(info);
+    } catch (err) {
+        console.log(err);
+    }
+
+}
 
 const contractGenJSON = require('../build/contracts/GeneConsent.json');
 const contractEndJSON = require('../build/contracts/EndoConsent.json');
@@ -159,7 +185,9 @@ app.put('/update-patient-field/:cnp', async (req, res) => {
         if (!updatedPatient) {
             return res.status(404).json({ error: 'Pacientul nu a fost găsit' });
         }
-
+        if(field === 'tratamente') {
+            sentEmail(`Salut, ai primit acest email deoarece lista ta de tratamente a fost modificata: ${value}.`, updatedPatient.any.email)
+        }
         return res.status(200).json({ message: 'Actualizat cu succes' });
     } catch (err) {
         console.error('Eroare la update:', err);
