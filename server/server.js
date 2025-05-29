@@ -186,7 +186,7 @@ app.put('/update-patient-field/:cnp', async (req, res) => {
             return res.status(404).json({ error: 'Pacientul nu a fost găsit' });
         }
         if(field === 'tratamente') {
-            sentEmail(`Salut, ai primit acest email deoarece lista ta de tratamente a fost modificata: ${value}.`, updatedPatient.any.email)
+            await sentEmail(`Salut, ai primit acest email deoarece lista ta de tratamente a fost modificata: ${value}.`, updatedPatient.any.email)
         }
         return res.status(200).json({ message: 'Actualizat cu succes' });
     } catch (err) {
