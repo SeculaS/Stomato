@@ -79,7 +79,7 @@ function App() {
                        newestOnTop={true}
                        closeOnClick
                        pauseOnHover
-                       theme="light"
+                       theme="colored"
       />
     </Router>
   );
