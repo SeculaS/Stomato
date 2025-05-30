@@ -100,8 +100,6 @@ const verifyToken = (req, res, next) => {
     jwt.verify(token, JWT_SECRET, (err, decoded) => {
         if (err) return res.status(403).json({ message: "Token invalid sau expirat" });
         req.userId = decoded.id;
-
-        console.log(req.userId);
         next();
     });
 };
@@ -181,8 +179,6 @@ app.get('/get-patients', async (req, res) => {
 app.put('/update-patient/:cnp', async (req, res) => {
     const cnp = req.params.cnp;
     const updatedData = req.body; // datele noi trimise de client
-    console.log(cnp);
-    console.log(updatedData);
     try {
         const updatedPatient = await Patient.findOneAndUpdate(
             { "any.CNP": cnp },

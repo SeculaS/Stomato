@@ -164,7 +164,10 @@ export default function PatientsList() {
         }, 300);
         return () => clearTimeout(debounceTimer);
     }, [searchTerm]);
-
+    const handleSearch = (value) => {
+        setSearchTerm(value);
+        fetchPatients(value);
+    }
     const handleTrigger = () => {
         setTriggered(!triggered);
         if(triggered === true) {
@@ -197,7 +200,6 @@ export default function PatientsList() {
                 }
 
                 const data = await res.json();
-                console.log(data);
                 setAcorduri(data);
             } catch (error) {
                 console.error('Eroare la fetch acorduri:', error);
@@ -232,7 +234,7 @@ export default function PatientsList() {
                         type="text"
                         placeholder="Caută pacient după nume sau CNP..."
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange={(e) => handleSearch(e.target.value)}
                         style={{ padding: '8px', marginBottom: '15px', width: '90%' }}
                     />
                     </> )}
