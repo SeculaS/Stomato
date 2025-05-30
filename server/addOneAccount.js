@@ -10,8 +10,8 @@ mongoose.connect('mongodb://localhost:27017/medical_forms', {
 });
 
 async function createUser() {
-    const hashedPassword = await bcrypt.hash('Parola', 10);
-    const user = new User({ username: 'Medic2', password: hashedPassword });
+    const hashedPassword = await bcrypt.hash('ChangeMe', 10);
+    const user = new User({ username: 'Administrator', password: hashedPassword, type: 'Admin'});
     await user.save();
     console.log('Utilizator creat.');
     await mongoose.disconnect();

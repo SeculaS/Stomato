@@ -4,6 +4,7 @@ import {FaPenToSquare, FaTrashCan, FaFilePdf, FaMagnifyingGlass, FaUserDoctor, F
 import TooltipButton from "./TooltipButton";
 import ModalAcorduri from "./ModalAcorduri"; //
 import {toast} from "react-toastify";
+
 let debounceTimer;
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 const PatientTreatmentModal = ({ patient, onClose }) => {
@@ -163,6 +164,7 @@ export default function PatientsList() {
         }, 300);
         return () => clearTimeout(debounceTimer);
     }, [searchTerm]);
+
     const handleTrigger = () => {
         setTriggered(!triggered);
         if(triggered === true) {
@@ -222,84 +224,86 @@ export default function PatientsList() {
         }
     };
 
-    return (
-        <div className={"form-container"} style={{maxWidth:'1200px'}}>
-            <div style={{ marginBottom: '20px' }}>
+    return (<div>
+            <div className={"form-container"} style={{maxWidth:'1200px'}}>
+                <div style={{ marginBottom: '20px' }}>
 
-                {triggered === true && ( <><input
-                    type="text"
-                    placeholder="Caută pacient după nume sau CNP..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    style={{ padding: '8px', marginBottom: '15px', width: '90%' }}
-                />
-                </> )}
-                <TooltipButton onClick={() => handleTrigger()} tooltipText={"Search patient"} style={{ padding: '8px', backgroundColor: 'white', color: '#007bff'}}><FaMagnifyingGlass/></TooltipButton>
+                    {triggered === true && ( <><input
+                        type="text"
+                        placeholder="Caută pacient după nume sau CNP..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        style={{ padding: '8px', marginBottom: '15px', width: '90%' }}
+                    />
+                    </> )}
+                    <TooltipButton onClick={() => handleTrigger()} tooltipText={"Search patient"} style={{ padding: '8px', backgroundColor: 'white', color: '#007bff'}}><FaMagnifyingGlass/></TooltipButton>
+                </div>
+
+                <h2>Lista Pacienților</h2>
+                <>
+                    <table border="1" cellPadding="8" style={{ borderCollapse: 'collapse', width: '100%' }}>
+                        <thead>
+                        <tr>
+                            <th>Nume si Prenume Pacient</th>
+                            <th>Nume si Prenume Tutore</th>
+                            <th>CNP Pacient</th>
+                            <th>Acțiuni</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {patients.map((patient) => (
+                            <tr key={patient._id}>
+                                <td>{patient.any.lastName} {patient.any.firstName}</td>
+                                <td>{patient.any.tutoreNume}</td>
+                                <td>{patient.any.CNP}</td>
+                                <td><center>
+                                    <TooltipButton tooltipText={"Edit patient"} onClick={() => handleEdit(patient.any.CNP)}><FaPenToSquare /></TooltipButton>{' '}
+                                    <TooltipButton tooltipText={"Delete patient"} style={{backgroundColor: "red"}} onClick={() => handleDelete(patient.any.CNP)}><FaTrashCan  /></TooltipButton>
+                                    &nbsp;
+                                    <TooltipButton tooltipText={"View or generate PDFs"} style={{ backgroundColor: "darkorange" }} onClick={() => handlePdfClick(patient)}><FaFilePdf /></TooltipButton>
+                                    {' '}<TooltipButton tooltipText={"Add treatment"} style={{backgroundColor: "darkblue"}} onClick={() => handleTreatmentClick(patient)}><FaUserDoctor/></TooltipButton>
+                                </center></td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+
+                    {}
+                    <div style={{ display: 'flex', justifyContent: 'right', marginTop: 30, marginRight:30}}>
+                        <TooltipButton tooltipText={"Add patient"}
+                            onClick={() => navigate('/chestionar')}
+                            style={{
+                                backgroundColor: '#007bff',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '50%',
+                                width: 60,
+                                height: 60,
+                                fontSize: 28,
+                                fontWeight: 'bold',
+                                cursor: 'pointer',
+                                boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+                            }}
+                        >
+                            +
+                        </TooltipButton>
+                    </div>
+                    {showModal && selectedPatient && (
+                        <ModalAcorduri
+                            patient={selectedPatient}
+                            acorduri={acorduri}
+                            onClose={() => setShowModal(false)}
+                        />
+                    )}
+                    {showTreatmentModal && selectedPatient && (
+                        <PatientTreatmentModal
+                        patient={selectedPatient}
+                        onClose={() => setShowTreatmentModal(false)}
+                        />
+                        ) }
+                </>
             </div>
 
-            <h2>Lista Pacienților</h2>
-            <>
-                <table border="1" cellPadding="8" style={{ borderCollapse: 'collapse', width: '100%' }}>
-                    <thead>
-                    <tr>
-                        <th>Nume si Prenume Pacient</th>
-                        <th>Nume si Prenume Tutore</th>
-                        <th>CNP Pacient</th>
-                        <th>Acțiuni</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {patients.map((patient) => (
-                        <tr key={patient._id}>
-                            <td>{patient.any.lastName} {patient.any.firstName}</td>
-                            <td>{patient.any.tutoreNume}</td>
-                            <td>{patient.any.CNP}</td>
-                            <td><center>
-                                <TooltipButton tooltipText={"Edit patient"} onClick={() => handleEdit(patient.any.CNP)}><FaPenToSquare /></TooltipButton>{' '}
-                                <TooltipButton tooltipText={"Delete patient"} style={{backgroundColor: "red"}} onClick={() => handleDelete(patient.any.CNP)}><FaTrashCan  /></TooltipButton>
-                                &nbsp;
-                                <TooltipButton tooltipText={"View or generate PDFs"} style={{ backgroundColor: "darkorange" }} onClick={() => handlePdfClick(patient)}><FaFilePdf /></TooltipButton>
-                                {' '}<TooltipButton tooltipText={"Add treatment"} style={{backgroundColor: "darkblue"}} onClick={() => handleTreatmentClick(patient)}><FaUserDoctor/></TooltipButton>
-                            </center></td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-
-                {}
-                <div style={{ display: 'flex', justifyContent: 'right', marginTop: 30, marginRight:30}}>
-                    <TooltipButton tooltipText={"Add patient"}
-                        onClick={() => navigate('/chestionar')}
-                        style={{
-                            backgroundColor: '#007bff',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '50%',
-                            width: 60,
-                            height: 60,
-                            fontSize: 28,
-                            fontWeight: 'bold',
-                            cursor: 'pointer',
-                            boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
-                        }}
-                    >
-                        +
-                    </TooltipButton>
-                </div>
-                {showModal && selectedPatient && (
-                    <ModalAcorduri
-                        patient={selectedPatient}
-                        acorduri={acorduri}
-                        onClose={() => setShowModal(false)}
-                    />
-                )}
-                {showTreatmentModal && selectedPatient && (
-                    <PatientTreatmentModal
-                    patient={selectedPatient}
-                    onClose={() => setShowTreatmentModal(false)}
-                    />
-                    ) }
-            </>
         </div>
     );
 }

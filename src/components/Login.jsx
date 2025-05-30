@@ -13,10 +13,10 @@ export default function Login({ onLogin }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`${backendUrl}/login`, { username, password });
+            const res = await axios.post(`${backendUrl}/api/login`, { username, password });
+            localStorage.setItem('token', res.data.token);
             onLogin();
             navigate('/patienti');
-            console.log(backendUrl);
         } catch (error) {
             toast.error('Date de conectare incorecte!');
             console.log(backendUrl);

@@ -15,6 +15,8 @@ const multer = require('multer');
 const path = require('path');
 const contractJSON = require('../build/contracts/MedicalConsent.json');
 const nodemailer = require('nodemailer');
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = "changeme";
 
 async function sentEmail(text_mail, to_mail) {
 
@@ -89,6 +91,46 @@ const Patient = mongoose.model('Patient', PatientSchema);
 const User = require('./models/User');
 
 const Form = require('./models/Form');
+
+const verifyToken = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(" ")[1];
+    if (!token) return res.status(401).json({ message: "Token lipsă" });
+
+    jwt.verify(token, JWT_SECRET, (err, decoded) => {
+        if (err) return res.status(403).json({ message: "Token invalid sau expirat" });
+        req.userId = decoded.id;
+
+        console.log(req.userId);
+        next();
+    });
+};
+
+app.post('/api/login', async (req, res) => {
+    const { username, password } = req.body;
+    try {
+        const user = await User.findOne({ username: username });
+        if (!user) return res.status(404).json({ message: "Utilizator inexistent" });
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) return res.status(401).json({ message: "Parolă greșită" });
+
+        const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '2h' });
+        res.json({ token });
+    } catch (err) {
+        res.status(500).json({ message: "Eroare server", error: err.message });
+    }
+});
+
+app.get('/api/me', verifyToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.userId).select('-password');
+        res.json(user);
+    } catch (err) {
+        res.status(500).json({ message: "Eroare la obținerea utilizatorului" });
+    }
+});
+
 
 
 app.post('/upload', upload.single('img'), (req, res) => {
@@ -224,17 +266,6 @@ app.delete('/delete-patient/:cnp', async (req, res) => {
         console.error('Eroare la ștergere:', error);
         res.status(500).json({ message: 'Eroare internă la ștergere.' });
     }
-});
-app.post('/login', async (req, res) => {
-    const { username, password } = req.body;
-
-    const user = await User.findOne({ username });
-    if (!user) return res.status(401).json({ error: 'Utilizator inexistent' });
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) return res.status(401).json({ error: 'Parolă greșită' });
-
-    res.status(200).json({ message: 'Autentificare reușită' });
 });
 
 app.post('/submit-form', async (req, res) => {
