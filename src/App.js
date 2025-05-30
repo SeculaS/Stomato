@@ -15,7 +15,6 @@ import AcordChir from "./components/AcordChir";
 import ViewChir from "./components/ViewChir";
 import AcordGene from "./components/AcordGene";
 import ViewGene from "./components/ViewGene";
-
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 

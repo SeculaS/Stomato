@@ -274,7 +274,7 @@ export default function EditMedicalFile() {
                 'Probleme psihice'
             ].map((conditie, index) => (
                 <label key={index} className="checkbox">
-                    <input
+                    <input style={{width: '10%'}}
                         type="checkbox"
                         checked={formData.medicalHistory?.[conditie] || false}
                         onChange={(e) => {
@@ -297,7 +297,7 @@ export default function EditMedicalFile() {
                 Sunteți însărcinată?
                 <div>
                     <label>
-                        <input
+                        <input style={{width:'10%'}}
                             type="radio"
                             name="pregnant"
                             value="da"
@@ -305,8 +305,8 @@ export default function EditMedicalFile() {
                             onChange={handleChange}
                         /> DA
                     </label>
-                    <label style={{ marginLeft: '2rem' }}>
-                        <input
+                    <label>
+                        <input style={{width:'10%'}}
                             type="radio"
                             name="pregnant"
                             value="nu"
@@ -334,7 +334,7 @@ export default function EditMedicalFile() {
                 Alăptați?
                 <div>
                     <label>
-                        <input
+                        <input style={{width:'10%'}}
                             type="radio"
                             name="nursing"
                             value="da"
@@ -342,8 +342,8 @@ export default function EditMedicalFile() {
                             onChange={handleChange}
                         /> DA
                     </label>
-                    <label style={{ marginLeft: '2rem' }}>
-                        <input
+                    <label>
+                        <input style={{width:'10%'}}
                             type="radio"
                             name="nursing"
                             value="nu"

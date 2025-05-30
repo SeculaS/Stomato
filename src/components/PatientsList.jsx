@@ -163,7 +163,12 @@ export default function PatientsList() {
         }, 300);
         return () => clearTimeout(debounceTimer);
     }, [searchTerm]);
-
+    const handleTrigger = () => {
+        setTriggered(!triggered);
+        if(triggered === true) {
+            setSearchTerm('');
+        }
+    }
     const handleEdit = (cnp) => {
         navigate(`/edit/${cnp}`);
     };
@@ -229,7 +234,7 @@ export default function PatientsList() {
                     style={{ padding: '8px', marginBottom: '15px', width: '90%' }}
                 />
                 </> )}
-                <TooltipButton onClick={r=> setTriggered(!triggered)} tooltipText={"Search patient"} style={{ padding: '8px'}}><FaMagnifyingGlass/></TooltipButton>
+                <TooltipButton onClick={() => handleTrigger()} tooltipText={"Search patient"} style={{ padding: '8px', backgroundColor: 'white', color: '#007bff'}}><FaMagnifyingGlass/></TooltipButton>
             </div>
 
             <h2>Lista Pacienților</h2>
