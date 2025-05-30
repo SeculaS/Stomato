@@ -208,8 +208,9 @@ export default function PatientsList() {
             const res = await fetch(`${backendUrl}/delete-patient/${cnp}`, { method: 'DELETE' });
             if (res.ok) {
                 await fetchPatients(); // reîncarcă lista după ștergere
+                toast.success('Pacientul a fost sters cu succes!');
             } else {
-                alert('Eroare la ștergerea pacientului');
+                toast.error('Eroare la ștergerea pacientului');
             }
         } catch (error) {
             console.error('Eroare la ștergere:', error);

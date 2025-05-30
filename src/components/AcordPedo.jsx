@@ -148,7 +148,7 @@ export default function AcordPedo() {
             const result = await response.json();
 
             if (response.ok) {
-                toast.success('Formular trimis cu succes! ' + result.message);
+                toast.success('Acordul a fost inregistrat cu succes!');
                 navigate('/patienti')
             } else {
                 toast.error('Eroare la trimitere: ' + result.error);

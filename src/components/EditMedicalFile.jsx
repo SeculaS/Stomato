@@ -366,7 +366,7 @@ export default function EditMedicalFile() {
 
 
 
-            <button type="submit">Trimite</button>
+            <button type="submit">Salveaza</button>
         </form>
 
     );
