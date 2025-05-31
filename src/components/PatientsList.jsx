@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {FaPenToSquare, FaTrashCan, FaFilePdf, FaMagnifyingGlass, FaUserDoctor, FaListCheck} from "react-icons/fa6";
+import {FaPenToSquare, FaTrashCan, FaMagnifyingGlass, FaListCheck, FaUserDoctor, FaUserPlus} from "react-icons/fa6";
+import {FaFolderOpen} from "react-icons/fa6";
 import TooltipButton from "./TooltipButton";
 import ModalAcorduri from "./ModalAcorduri"; //
 import {toast} from "react-toastify";
@@ -262,7 +263,7 @@ export default function PatientsList() {
                                     <TooltipButton tooltipText={"Edit patient"} onClick={() => handleEdit(patient.any.CNP)}><FaPenToSquare /></TooltipButton>{' '}
                                     <TooltipButton tooltipText={"Delete patient"} style={{backgroundColor: "red"}} onClick={() => handleDelete(patient.any.CNP)}><FaTrashCan  /></TooltipButton>
                                     &nbsp;
-                                    <TooltipButton tooltipText={"View or generate PDFs"} style={{ backgroundColor: "darkorange" }} onClick={() => handlePdfClick(patient)}><FaFilePdf /></TooltipButton>
+                                    <TooltipButton tooltipText={"View or generate PDFs"} style={{ backgroundColor: "darkorange" }} onClick={() => handlePdfClick(patient)}><FaFolderOpen /></TooltipButton>
                                     {' '}<TooltipButton tooltipText={"Add treatment"} style={{backgroundColor: "darkblue"}} onClick={() => handleTreatmentClick(patient)}><FaUserDoctor/></TooltipButton>
                                 </center></td>
                             </tr>
@@ -287,7 +288,7 @@ export default function PatientsList() {
                                 boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
                             }}
                         >
-                            +
+                            <FaUserPlus/>
                         </TooltipButton>
                     </div>
                     {showModal && selectedPatient && (

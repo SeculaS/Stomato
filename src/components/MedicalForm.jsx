@@ -351,7 +351,8 @@ export default function MedicalForm() {
                     'Boli neurologice',
                     'Probleme psihice'
                 ].map((conditie, index) => (
-                    <label key={index} className="checkbox">
+                    <div>
+                    <label key={index} className="custom-checkbox">
                         <input style={{width: '10%'}}
                             type="checkbox"
                             checked={formData.medicalHistory[conditie] || false}
@@ -365,8 +366,9 @@ export default function MedicalForm() {
                                 }));
                             }}
                         />
+                        <span className="checkmark" style={{width: '9px', height: '9px'}}></span>
                         {conditie}
-                    </label>
+                    </label></div>
                 ))}{ (parseInt(formData.CNP[0])%2 === 0 && formData.CNP.length > 0) && ( <>
                 <h3>Secțiune pentru femei</h3>
 

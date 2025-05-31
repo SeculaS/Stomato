@@ -273,22 +273,24 @@ export default function EditMedicalFile() {
                 'Boli neurologice',
                 'Probleme psihice'
             ].map((conditie, index) => (
-                <label key={index} className="checkbox">
-                    <input style={{width: '10%'}}
-                        type="checkbox"
-                        checked={formData.medicalHistory?.[conditie] || false}
-                        onChange={(e) => {
-                            setFormData(prev => ({
-                                ...prev,
-                                medicalHistory: {
-                                    ...prev.medicalHistory,
-                                    [conditie]: e.target.checked
-                                }
-                            }));
-                        }}
-                    />
+                <div>
+                <label key={index} className="custom-checkbox">
+                    <input style={{width: '100%'}}
+                           type="checkbox"
+                           checked={formData.medicalHistory?.[conditie] || false}
+                           onChange={(e) => {
+                               setFormData(prev => ({
+                                   ...prev,
+                                   medicalHistory: {
+                                       ...prev.medicalHistory,
+                                       [conditie]: e.target.checked
+                                   }
+                               }));
+                           }}
+                    /><span className="checkmark" style={{width: '9px', height: '9px'}}></span>
                     {conditie}
                 </label>
+                </div>
             ))}
             {parseInt(formData.CNP[0])%2 === 0 && ( <>
             <h3>Secțiune pentru femei</h3>

@@ -2,7 +2,6 @@ import React from 'react';
 import TooltipButton from "./TooltipButton";
 import { useNavigate } from "react-router-dom";
 
-
 export default function ModalAcorduri({ patient, acorduri, onClose }) {
     // grupare acorduri pe tip
     const navigate = useNavigate();
