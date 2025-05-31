@@ -1,6 +1,7 @@
 import React from 'react';
 import TooltipButton from "./TooltipButton";
 import { useNavigate } from "react-router-dom";
+import {FaFileCirclePlus} from "react-icons/fa6";
 
 export default function ModalAcorduri({ patient, acorduri, onClose }) {
     // grupare acorduri pe tip
@@ -94,7 +95,7 @@ export default function ModalAcorduri({ patient, acorduri, onClose }) {
                                 }
                                 else
                                     navigate(`/acordgenecreate/${patient.any.CNP}`);
-                            }} tooltipText={"Creeaza acord"}>+</TooltipButton></center>
+                            }} tooltipText={"Creeaza acord"}><FaFileCirclePlus/></TooltipButton></center>
 
                             {/* Lista acorduri */}
 
@@ -102,7 +103,7 @@ export default function ModalAcorduri({ patient, acorduri, onClose }) {
                     ))}
                 </div>
 
-                <center><button onClick={onClose} style={{ marginTop: 20 }}>Închide</button></center>
+                <center><button onClick={onClose} style={{ marginTop: 20 }}>Close</button></center>
             </div>
         </div>
     );
